@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    <title>Live Scanner IMS</title>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <style>
+        body { font-family: sans-serif; text-align: center; background: #222; color: #fff; margin: 0; padding: 20px; }
+        #reader { width: 100%; max-width: 400px; margin: 15px auto; background: #000; border-radius: 8px; overflow: hidden; border: 2px solid #28a745; }
+        .loading { font-size: 18px; color: #ffc107; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h3>Arahkan Kamera ke QR Code</h3>
+    <p style="font-size: 14px; color: #ccc;">Jendela ini akan menutup otomatis setelah scan berhasil.</p>
+    
+    <div id="reader"></div>
+    <div id="pesan" class="loading">Meminta izin kamera...</div>
+
+    <script>
+        const pesan = document.getElementById("pesan");
+        const html5QrCode = new Html5Qrcode("reader");
+
+        // Konfigurasi kamera belakang dengan resolusi ideal
+        html5QrCode.start(
+            { facingMode: "environment" }, 
+            { fps: 15, qrbox: { width: 250, height: 250 } },
+            (decodedText) => {
+                // === BAGIAN YANG DIUBAH (MULAI) ===
+                pesan.innerHTML = "✅ QR Terdeteksi! Mengirim data...";
+                pesan.style.color = "#28a745";
+                
+                // 1. Langsung tembak datanya ke web induk (index.html) menggunakan window.parent
+                if (window.parent) {
+                    window.parent.postMessage({ type: "HASIL_QR_IMS", text: decodedText }, "*");
+                }
+
+                // 2. Kamera dimatikan di background belakangan
+                html5QrCode.stop().catch(err => console.log("Kamera dimatikan"));
+                
+                // CATATAN: window.close() DIHAPUS karena Iframe akan dihilangkan otomatis 
+                // oleh fungsi tutupScanner() yang ada di file index.html lu bro!
+                // === BAGIAN YANG DIUBAH (SELESAI) ===
+            },
+            (errorMessage) => {
+                // Abaikan error saat sistem sedang mencari QR di frame kosong
+            }
+        ).then(() => {
+            pesan.innerHTML = "Kamera aktif. Silakan scan.";
+            pesan.style.color = "#fff";
+        }).catch(err => {
+            pesan.innerHTML = "❌ Gagal buka kamera. Pastikan izin diberikan.";
+            pesan.style.color = "#dc3545";
+            alert("Harap izinkan akses kamera di pop-up browser Anda!");
+        });
+    </script>
+</body>
+</html>

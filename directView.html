@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <title>Detail Material - IMS</title>
+  <style>
+    body { font-family: 'Arial', sans-serif; background: #f5f5f5; margin: 0; padding: 20px; }
+    .container { max-width: 480px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 3px 12px rgba(0,0,0,0.15); }
+    .loader { text-align: center; padding: 50px; color: #666; font-weight: bold; font-size: 16px; }
+    /* Style tambahan untuk tombol interaksi */
+    .btn-action { flex: 1; padding: 12px 10px; border: none; border-radius: 8px; font-weight: bold; font-size: 14px; cursor: pointer; color: white; transition: 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .btn-action:active { transform: scale(0.96); }
+    .btn-masuk { background: #009900; }
+    .btn-keluar { background: #800000; }
+  </style>
+</head>
+<body>
+
+  <div id="content" class="container">
+    <div class="loader">⏳ Memuat data material...</div>
+  </div>
+
+  <script src="api.js"></script>
+  
+  <script>
+    window.onload = async function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const id = urlParams.get('id');
+
+      if (!id) {
+        document.getElementById('content').innerHTML = "<h3 style='text-align:center; color:#dc3545;'>Error: ID Material tidak ditemukan di URL!</h3>";
+        return;
+      }
+
+      try {
+        const data = await panggilAPI("getMaterialByStockCode", { id: id });
+        
+        if (!data || data.success === false) {
+          document.getElementById('content').innerHTML = `
+            <div style="text-align:center; padding:20px;">
+              <div style="font-size: 45px; margin-bottom: 10px;">⚠️</div>
+              <h3 style="color:#dc3545; margin:0 0 10px 0;">Data Tidak Ditemukan!</h3>
+              <p style="color:#555;">Material dengan Stock Code <b>${id}</b> tidak ada di database.</p>
+            </div>`;
+          return;
+        }
+
+        let stokAktual = data.stokFisik !== "" && data.stokFisik !== null ? Number(data.stokFisik) : 0;
+        
+        // Render UI Data + Tombol Transaksi
+        document.getElementById('content').innerHTML = `
+          <div style="text-align:center;">
+            <h2 style="color:#0F4C81; margin:0 0 5px 0;">INVENTORY MANAGEMENT SYSTEM</h2>
+            <div style="color:#666; font-size:12px; margin-bottom:15px; font-weight:bold;">ULPLTD SEI RAYA</div>
+            
+            ${data.photoUrl ? `<img src="${data.photoUrl}" style="width:100%; max-width:280px; height:280px; object-fit:cover; border-radius:10px; border:1px solid #ddd; margin-bottom:15px;">` : `<div style="width:100%; max-width:280px; height:280px; background:#eee; display:flex; align-items:center; justify-content:center; margin:0 auto 15px auto; border-radius:10px; color:#888; border:1px dashed #ccc;">Tidak Ada Foto</div>`}
+            
+            <h1 style="margin:10px 0; font-size:22px; color:#333; text-transform: uppercase;">${data.itemName || '-'}</h1>
+            
+            <div style="text-align:left; background:#f8f9fa; padding:15px; border-radius:8px; border:1px solid #eee; font-size:14px; line-height:1.6;">
+              <div><b>Stock Code :</b> <span style="color:#0F4C81; font-weight:bold;">${data.stockCode || '-'}</span></div>
+              <div><b>Part Number :</b> ${data.partNumber || '-'}</div>
+              <div><b>Kategori :</b> ${data.category || '-'}</div>
+              <div><b>Satuan :</b> ${data.satuan || '-'}</div>
+              
+              <div style="margin-top:10px; border-top:1px dashed #ccc; padding-top:10px;">
+                <div><b>Stok Gudang (Fisik) :</b> <span style="color:#27ae60; font-weight:bold; font-size:16px;">${stokAktual}</span></div>
+                <div><b>SOH Ellipse :</b> ${data.sohEllipse || '0'}</div>
+              </div>
+              
+              <div style="margin-top:10px; border-top:1px dashed #ccc; padding-top:10px;">
+                <div><b>Lokasi Rak :</b> <span style="background:#fff3cd; padding:2px 6px; border-radius:4px; font-weight:bold;">📍 ${data.lokasiRak || '-'}</span></div>
+              </div>
+            </div>
+
+            <div style="display:flex; gap:10px; margin-top:20px;">
+                <button onclick="arahkanKeTransaksi('masuk', '${data.stockCode}')" class="btn-action btn-masuk">📥 MATERIAL MASUK</button>
+                <button onclick="arahkanKeTransaksi('keluar', '${data.stockCode}')" class="btn-action btn-keluar">📤 MATERIAL KELUAR</button>
+            </div>
+            
+          </div>
+        `;
+      } catch (err) {
+        document.getElementById('content').innerHTML = "<h3 style='text-align:center; color:#dc3545;'>Terjadi kesalahan teknis saat menghubungi server.</h3>";
+      }
+    };
+
+    // Fungsi pelempar parameter URL ke sistem utama (index.html)
+    function arahkanKeTransaksi(jenis, kode) {
+        window.location.href = `index.html?menu=${jenis}&kode=${kode}`;
+    }
+  </script>
+</body>
+</html>

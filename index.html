@@ -1,0 +1,2387 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>IMS ULPLTD SEI RAYA</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<style>
+/* --- BASE STYLES --- */
+body { margin: 0; font-family: 'Poppins', sans-serif; background: #f5f5f5; height: 100vh; height: 100dvh; overflow: hidden; display: flex; flex-direction: column; }
+/* --- SCROLLBAR FIX (CHROME/EDGE/SAFARI/HP) --- */
+::-webkit-scrollbar {
+    width: 0px !important;  /* MATIKAN SCROLLBAR VERTIKAL SECARA GLOBAL */
+    height: 6px !important; /* MUNCULKAN HORIZONTAL BILA PERLU (LANGSING) */
+    background: transparent;
+}
+::-webkit-scrollbar:vertical { display: none !important; width: 0px !important; }
+::-webkit-scrollbar:horizontal { display: block !important; height: 6px !important; }
+::-webkit-scrollbar-track:horizontal { background: transparent !important; }
+::-webkit-scrollbar-thumb:horizontal { background: #0F4C81 !important; border-radius: 10px !important; }
+::-webkit-scrollbar-thumb:horizontal:hover { background: #0b375e !important; }
+html, body, .scrollable-content-area { scrollbar-width: thin !important; scrollbar-color: #0F4C81 transparent !important; }
+
+.fade-in { animation: fadeInEffect 0.4s ease-out forwards; }
+@keyframes fadeInEffect { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+/* --- LOGIN PAGE --- */
+.login-overlay { position: fixed; inset: 0; background: linear-gradient(135deg, #0F4C81 0%, #1d72b8 100%); display: flex; justify-content: center; align-items: center; z-index: 999999; }
+.login-card { background: white; padding: 35px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); width: 100%; max-width: 380px; box-sizing: border-box; text-align: center; }
+.login-logos { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+.login-logos img { height: 35px; width: auto; }
+.login-card h2 { margin: 0; font-size: 20px; color: #0F4C81; font-weight: 700; }
+.login-card p { margin: 5px 0 25px 0; font-size: 12px; color: #666; }
+.login-field { text-align: left; margin-bottom: 15px; }
+.login-field label { display: block; font-size: 12px; font-weight: 600; color: #333; margin-bottom: 5px; text-transform: uppercase; }
+.login-field input { width: 100%; height: 42px; border: 1px solid #cbd5e1; border-radius: 8px; padding: 0 12px; font-size: 15px; box-sizing: border-box; font-family: 'Poppins', sans-serif;}
+.login-field input:focus { border-color: #0F4C81; outline: none; box-shadow: 0 0 0 3px rgba(15, 76, 129, 0.1); }
+.btn-login { width: 100%; height: 45px; background: #0F4C81; color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 10px; transition: 0.2s; font-family: 'Poppins', sans-serif;}
+.btn-login:hover { background: #0b375e; }
+
+/* [FIX] Styling buat tombol mata dan z-index pop up */
+.password-wrapper { position: relative; width: 100%; }
+.eye-icon { 
+    position: absolute; right: 12px; top: 38px; cursor: pointer; 
+    display: flex; align-items: center; justify-content: center;
+    width: 24px; height: 24px;
+}
+/* Menjamin Pop Up SweetAlert selalu muncul di depan layar login */
+.swal2-container { z-index: 9999999 !important; }
+
+/* --- SIDEBAR & HEADER --- */
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,.35); display: none; z-index: 999; }
+.sidebar { height: 100%; width: 0; position: fixed; top: 0; left: 0; background: #fff; overflow-x: hidden; transition: .3s; z-index: 1000; box-shadow: 3px 0 15px rgba(0,0,0,.25); }
+.sidebar-header { padding: 20px; background: #0F4C81; color: #fff; }
+.sidebar-title { font-size: 20px; font-weight: 700; line-height: 1.3; }
+.sidebar-subtitle { font-size: 11px; opacity: .85; margin-top: 8px; }
+.sidebar a { display: block; padding: 18px 20px; text-decoration: none; color: #333; transition: .2s; font-weight: 500;}
+.sidebar a:hover { background: #f4f7fa; padding-left: 28px; color: #0F4C81; }
+.closebtn { position: absolute; right: 15px; top: 10px; color: white; font-size: 30px; cursor: pointer; }
+.header { padding: 10px 20px; background: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.05); z-index: 99; }
+.header-top { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; width: 100%; }
+.logomkp { justify-self: start; } .logomkp img { height: 55px; width: auto; display: block; }
+.logo { justify-self: end; } .logo img { height: 45px; width: auto; display: block; }
+.datetime { text-align: center; font-size: 15px; font-weight: 500; color: #444; line-height: 1.4; }
+.menu-container { background: #f5f5f5; padding: 5px 20px; }
+.menu { font-size: 28px; cursor: pointer; color: #333; user-select: none; width: max-content; }
+
+/* --- LAYOUT CONTEN HALAMAN --- */
+.content { flex: 1; display: flex; justify-content: center; align-items: center; text-align: center; padding: 20px; overflow-y: auto; }
+.content-wrapper { transform: translateY(-20px); }
+.title { font-size: clamp(18px, 5vw, 40px); font-weight: 800; margin-bottom: 20px; letter-spacing: 0.5px; color: #0F4C81; }
+.subtitle { font-size: clamp(11px, 2.5vw, 18px); margin-top: 10px; margin-bottom: 35px; letter-spacing: 1px; font-weight: 500;}
+.description { font-size: 16px; line-height: 1.8; color: #444; }
+.footer { position: fixed; bottom: 0; right: 0; padding: 4px 10px; color: #888; font-size: 11px; background: rgba(245,245,245,0.9); z-index: 9999; }
+/* Pola layout terpadu: setiap halaman mengisi sisa ruang (flex:1) dan hanya scroll di area kontennya sendiri (.scrollable-content-area), bukan mengunci tinggi per-px */
+.search-page { display: none; flex-direction: column; flex: 1; min-height: 0; box-sizing: border-box; }
+.search-box-sticky { max-width: 1200px; width: 100%; margin: 0 auto; padding: 10px 30px; box-sizing: border-box; flex-shrink: 0; }
+.scrollable-content-area { flex: 1; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 10px 30px 60px 30px; box-sizing: border-box; }
+.search-box-sticky h2 { margin-top: 0; margin-bottom: 8px; font-size: 22px; color: #333; font-weight: 700;}
+.search-box-sticky p { margin-top: 0; margin-bottom: 8px; color: #666; font-size: 14px; }
+.search-container { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.search-input-wrapper { position: relative; flex: 1; min-width: 300px; }
+.search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #777; }
+.search-input-wrapper input { width: 100%; padding: 12px 12px 12px 38px; font-size: 15px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 6px; font-family: 'Poppins', sans-serif;}
+.search-container button { height: 45px; border: none; border-radius: 6px; padding: 0 18px; cursor: pointer; font-weight: 600; background: #0F4C81; color: white; font-family: 'Poppins', sans-serif;}
+.search-container button:hover { background: #0b375e; }
+#keywordCari, #keywordQR, #keywordMasuk, #keywordKeluar, #keywordMonitoring { text-transform: uppercase; }
+
+/* --- COMPONENTS --- */
+.loader-container { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 30px; width: 100%; box-sizing: border-box; }
+.spinner { border: 4px solid rgba(0, 0, 0, 0.1); width: 36px; height: 36px; border-radius: 50%; border-left-color: #0F4C81; animation: spin 0.8s linear infinite; margin-bottom: 10px; }
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+.result-card { max-width: 1200px; margin: 0 auto 15px auto; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,.08); box-sizing: border-box; transition: 0.2s; -ms-overflow-style: none; scrollbar-width: none;}
+.result-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,.15); }
+.result-card::-webkit-scrollbar { display: none; }
+.monitoring-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; max-width: 1200px; width: 100%; margin: 0 auto 15px auto; padding: 0 30px; box-sizing: border-box; }
+.summary-card { background: white; padding: 15px 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,.08); display: flex; flex-direction: column; justify-content: center; border-left: 5px solid #0F4C81; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; user-select: none; }
+.summary-card:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.12); }
+.summary-card.active-filter { background: #f0f7ff; outline: 2px solid #0F4C81; }
+.summary-card.normal { border-left-color: #2ecc71; } .summary-card.normal.active-filter { background: #f4fbf7; outline: 2px solid #2ecc71; }
+.summary-card.minimum { border-left-color: #f5b041; } .summary-card.minimum.active-filter { background: #fffdf0; outline: 2px solid #f5b041; }
+.summary-card.habis { border-left-color: #ec7063; } .summary-card.habis.active-filter { background: #fff5f5; outline: 2px solid #ec7063; }
+.summary-card .card-title { font-size: 13px; color: #666; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; }
+.summary-card .card-value { font-size: 28px; font-weight: 800; color: #333; margin-top: 5px; }
+
+/* Container pembungkus tabel */
+.table-scroll-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    max-height: 60vh;
+    overflow-y: auto;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(0,0,0,.08);
+}
+
+.monitoring-table { 
+    width: 100%;
+    border-collapse: separate; 
+    border-spacing: 0; 
+}
+
+.monitoring-table th { 
+    background-color: #0F4C81 !important; 
+    color: white !important; 
+    padding: 14px; 
+    text-align: left; 
+    position: -webkit-sticky !important; 
+    position: sticky !important; 
+    top: 0 !important;
+    z-index: 999 !important;
+    font-weight: 600; 
+    box-shadow: 0 2px 2px rgba(0,0,0,0.1);
+	background-clip: padding-box;
+}
+
+/* --- RESPONSIVE MOBILE --- */
+@media(max-width:768px){
+  html, body { overflow-x: hidden !important; max-width: 100% !important; width: 100% !important; }
+  .content-wrapper, .scrollable-content-area, .search-box-sticky { width: auto !important; max-width: 100% !important; box-sizing: border-box !important; }
+  body { background: #f8fafc; }
+  .header { padding: 8px 12px; border-bottom: 1px solid #e2e8f0; }
+  .header-top { display: grid !important; grid-template-columns: auto 1fr auto !important; gap: 8px !important; }
+  .logomkp img { height: 26px !important; } .logo img { height: 24px !important; }
+  .datetime { font-size: 10px !important; color: #64748b; font-weight: 600 !important; }
+  .title { font-size: 20px; font-weight: 800; margin-top: 10px; } .subtitle { font-size: 12px; margin-bottom: 15px; }
+  .search-box-sticky { padding: 12px 16px; }
+  .search-container { display: flex !important; flex-direction: row !important; flex-wrap: wrap !important; gap: 8px !important; }
+  .search-input-wrapper { flex: 1 1 100% !important; margin-bottom: 2px !important; }
+  .search-input-wrapper input { height: 46px; border-radius: 10px; }
+  .search-container button { height: 42px !important; border-radius: 10px !important; font-size: 13px !important; }
+  .search-container button:nth-of-type(1) { flex: 2 !important; } 
+  .search-container button:nth-of-type(2) { flex: 2.5 !important; } 
+  .search-container button:nth-of-type(3), .search-container button:nth-of-type(4) { flex: 1 !important; max-width: 46px !important; font-size: 15px !important; } 
+  .scrollable-content-area { padding: 8px 16px 100px 16px; }
+  .result-card { border-radius: 14px !important; padding: 16px !important; margin-bottom: 20px !important; }
+  .result-card img { width: 100% !important; height: 160px !important; object-fit: cover !important; border-radius: 10px !important; }
+  .result-card h2, .result-card h3 { font-size: 18px !important; font-weight: 800 !important; }
+  .result-card td input { height: 42px !important; border-radius: 8px !important; background: #f8fafc !important; border: 1px solid #cbd5e1 !important;}
+  .result-card button[id^="btnSimpan"] { height: 46px !important; border-radius: 10px !important; }
+  .monitoring-summary { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; padding: 0 16px !important; margin-bottom: 15px !important; }
+  .summary-card { padding: 12px 16px !important; border-radius: 12px !important; }
+  .summary-card .card-title { font-size: 10px !important; } .summary-card .card-value { font-size: 18px !important; }
+  .table-scroll-container { width: 100% !important; overflow-x: auto !important; -webkit-overflow-scrolling: touch; border-radius: 10px !important; background: #ffffff !important; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05) !important; margin-top: 5px !important; border: 1px solid #cbd5e1 !important; }
+  .monitoring-table th, .monitoring-table td { white-space: nowrap !important; padding: 10px 14px !important; font-size: 13px !important; }
+  #formMaterialBaruGrid { grid-template-columns: 1fr !important; }
+}
+
+.select-filter-log {
+  height: 45px; border: 1px solid #ccc; border-radius: 6px; padding: 0 10px;
+  font-family: 'Poppins', sans-serif; font-size: 14px; background: white; cursor: pointer; min-width: 120px;
+}
+.select-filter-log:focus { border-color: #0F4C81; outline: none; }
+
+
+/* ==========================================================================
+   PENYESUAIAN PER-HALAMAN (versi ringkas — tanpa mengunci tinggi per-px)
+   Tinggi & scroll setiap halaman sudah ditangani otomatis oleh pola
+   .search-page { flex:1 } + .scrollable-content-area { flex:1; overflow-y:auto }
+   di atas. Blok di bawah ini hanya untuk penyesuaian lebar/estetika unik.
+   ========================================================================== */
+
+#searchPage .search-box-sticky,
+#searchPage .result-card {
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+#materialMasukPage .result-card,
+#materialKeluarPage .result-card {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 15px 25px;
+  box-sizing: border-box;
+  overflow-y: visible !important;
+}
+
+#hasilMaterialMasuk .result-card,
+#hasilMaterialKeluar .result-card {
+    max-height: none !important; /* Membuang batas tinggi maksimal kotak */
+    overflow-y: visible !important; /* Mematikan fungsi scroll di dalam kotak */
+	padding: 15px 25px;
+	/* [TAMBAHAN BARU] Kunci layar agar tidak goyang ditarik-tarik */
+    max-width: 100% !important; /* Pastikan kotak tidak melebihi lebar layar */
+    overflow-x: hidden !important; /* Potong dan sembunyikan elemen yang tembus ke samping */
+    touch-action: pan-y !important; /* Paksa layar HP HANYA merespon usapan atas dan bawah */
+}
+	
+#monitoringPage .search-container {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+#monitoringPage #filterKategoriMonitoring {
+  height: 42px;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 13.5px;
+  background-color: #ffffff;
+  color: #333;
+  outline: none;
+  cursor: pointer;
+  min-width: 170px;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+#monitoringPage #filterKategoriMonitoring:focus {
+  border-color: #0F4C81;
+  box-shadow: 0 0 5px rgba(15, 76, 129, 0.3);
+}
+#monitoringPage .search-input-wrapper,
+#monitoringPage .search-container input,
+#monitoringPage .search-container button {
+  height: 42px;
+  box-sizing: border-box;
+}
+
+#materialBaruCard {
+  width: 100%;
+  max-width: clamp(320px, 92vw, 880px);
+}
+
+/* --- TABLET (601px - 1024px) --- */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .monitoring-summary { grid-template-columns: repeat(3, 1fr); }
+  .search-box-sticky { padding: 12px 20px; }
+  .result-card { padding: 18px; }
+}
+
+/* --- MOBILE KECIL (≤380px, mis. iPhone SE) --- */
+@media (max-width: 380px) {
+  .title { font-size: 16px; }
+  .subtitle { font-size: 11px; }
+  .monitoring-summary { grid-template-columns: repeat(2, 1fr) !important; gap: 8px !important; }
+  .search-container button { font-size: 11px !important; padding: 0 10px !important; }
+  .result-card img { height: 130px !important; }
+  #formMaterialBaruGrid { grid-template-columns: 1fr !important; }
+}
+
+/* ==========================================================================
+   MONITORING & LOG AKTIVITAS
+   Hanya SATU elemen yang benar-benar scroll: .table-scroll-container.
+   Wadah luar (.scrollable-content-area) dikunci diam agar tidak scroll ganda.
+   Scrollbar disembunyikan total (vertikal & horizontal) di semua browser,
+   tapi swipe/gesture/scroll-wheel tetap berfungsi normal.
+   ========================================================================== */
+#monitoringPage .scrollable-content-area,
+#logAktivitasPage .scrollable-content-area {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    padding-bottom: 10px;
+}
+
+#monitoringPage .table-scroll-container,
+#logAktivitasPage .table-scroll-container {
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    max-width: 100%;
+    overflow: auto;              /* satu-satunya elemen yang scroll, dua arah */
+    -webkit-overflow-scrolling: touch;
+    margin-top: 5px;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(0,0,0,.08);
+
+    scrollbar-width: none !important;      /* Firefox: sembunyikan total */
+    -ms-overflow-style: none !important;   /* Edge lama / IE11 */
+}
+	
+#monitoringPage .table-scroll-container::-webkit-scrollbar,
+#logAktivitasPage .table-scroll-container::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+
+/* 2. SIFAT DASAR TABEL: Auto (Bebas melar) */
+#monitoringPage .monitoring-table,
+#logAktivitasPage .monitoring-table {
+    width: 100% !important;
+    table-layout: auto !important; 
+    border-collapse: separate; 
+    border-spacing: 0; 
+}
+
+/* 3. DEFAULT SEL: Semua teks lurus menyamping dulu (biar tabel ngga keriting) */
+.monitoring-table th, 
+.monitoring-table td {
+    white-space: nowrap !important; 
+    padding: 10px 8px !important; 
+    font-size: 12px !important; /* Dikecilkan sedikit agar lebih lega */
+    vertical-align: top !important; 
+}
+
+/* 4. KUNCI HEADER (STICKY) */
+.monitoring-table th {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 10 !important; 
+    background-color: #0F4C81 !important; 
+    background-clip: padding-box; 
+}
+
+/* ========================================================= */
+/* 🎯 SNIPER CSS: TARGET KOLOM SPESIFIK AGAR MELIPAT BAWAH   */
+/* ========================================================= */
+
+/* --- A. MENU MONITORING MATERIAL --- */
+/* Target Kolom ke-2 (Item Name) */
+#monitoringPage .monitoring-table th:nth-child(2), 
+#monitoringPage .monitoring-table td:nth-child(2) {
+    white-space: normal !important; 
+    min-width: 180px !important; /* Jangan biarkan lebih sempit dari ini */
+    max-width: 250px !important; /* Jangan biarkan lebih lebar dari ini */
+    word-wrap: break-word !important; 
+}
+/* Target Kolom ke-3 (Part Number) */
+#monitoringPage .monitoring-table th:nth-child(3), 
+#monitoringPage .monitoring-table td:nth-child(3) {
+    white-space: normal !important; 
+    min-width: 130px !important; 
+    max-width: 160px !important; 
+    word-break: break-all !important; /* Paksa potong kode/angka yang panjang tanpa spasi */
+}
+
+/* --- B. MENU LOG AKTIVITAS --- */
+
+/* 1. Target Kolom Awal (Item Name, Stock Code, Part Number) */
+#logAktivitasPage .monitoring-table th:nth-child(3), 
+#logAktivitasPage .monitoring-table td:nth-child(3) {
+    white-space: normal !important; 
+    min-width: 150px !important; 
+    max-width: 220px !important; 
+    word-wrap: break-word !important; 
+}
+#logAktivitasPage .monitoring-table th:nth-child(4), 
+#logAktivitasPage .monitoring-table td:nth-child(4),
+#logAktivitasPage .monitoring-table th:nth-child(5), 
+#logAktivitasPage .monitoring-table td:nth-child(5) {
+    white-space: normal !important; 
+    min-width: 100px !important; 
+    max-width: 140px !important; 
+    word-break: break-all !important; 
+}
+
+/* 2. Target Kolom Akhir (Pemakaian/Ket, Status Material, Petugas Gudang) */
+#logAktivitasPage .monitoring-table th:nth-child(10), 
+#logAktivitasPage .monitoring-table td:nth-child(10) {
+    white-space: normal !important; 
+    min-width: 150px !important; 
+    max-width: 220px !important; 
+    word-wrap: break-word !important; 
+}
+#logAktivitasPage .monitoring-table th:nth-child(11), 
+#logAktivitasPage .monitoring-table td:nth-child(11),
+#logAktivitasPage .monitoring-table th:nth-child(13), 
+#logAktivitasPage .monitoring-table td:nth-child(13) {
+    white-space: normal !important; 
+    min-width: 100px !important; 
+    max-width: 130px !important; 
+    word-wrap: break-word !important; 
+}
+
+	
+</style>
+</head>
+<body>
+
+<div id="loginPage" class="login-overlay fade-in">
+  <div class="login-card">
+    <div class="login-logos">
+      <img src="https://mitrakaryaprima.com/wp-content/uploads/2023/12/logo-mkp-berwarna.png" alt="Logo MKP">
+      <img src="https://www.plnnusantarapower.co.id/images/logo-pln.png" alt="Logo PLN">
+    </div>
+    <h2>SIGAPRA</h2>
+    <p>Silakan masuk menggunakan Username Anda</p>
+    
+    <div class="login-field"><label for="loginUser">Username</label><input type="text" id="loginUser" placeholder="Masukkan username"></div>
+    
+    <div class="login-field password-wrapper">
+      <label for="loginPass">Password</label>
+      <input type="password" id="loginPass" placeholder="Masukkan password">
+      <span class="eye-icon" onclick="togglePassword()">
+        <svg id="iconEyeClosed" xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 -960 960 960" width="22px" fill="#333333"><path d="m644-428-58-58q9-47-27-88t-93-32l-58-58q17-8 34.5-12t37.5-4q75 0 127.5 52.5T660-500q0 20-4 37.5T644-428Zm128 126-58-56q38-29 67.5-63.5T832-500q-50-101-143.5-160.5T480-720q-29 0-57 4t-55 12l-62-62q41-17 84-25.5t90-8.5q146 0 266 81.5T920-500q-23 59-60.5 109.5T772-302Zm20 84L736-274q-58 35-120 54.5T480-200q-146 0-266-81.5T40-500q21-53 58-103.5T168-701L56-812l56-56 736 736-56 56ZM222-624q-29 26-53 57t-41 67q50 101 143.5 160.5T480-280q20 0 39-2.5t39-5.5l-36-38q-11 3-21 4.5t-21 1.5q-75 0-127.5-52.5T300-500q0-11 1.5-21t4.5-21l-84-82Zm319 93Zm-151 75Z"/></svg>
+        <svg id="iconEyeOpen" style="display:none;" xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 -960 960 960" width="22px" fill="#333333"><path d="M480-320q75 0 127.5-52.5T660-500q0-75-52.5-127.5T480-680q-75 0-127.5 52.5T300-500q0 75 52.5 127.5T480-320Zm0-72q-45 0-76.5-31.5T372-500q0-45 31.5-76.5T480-608q45 0 76.5 31.5T588-500q0 45-31.5 76.5T480-392Zm0 192q-146 0-266-81.5T40-500q54-137 174-218.5T480-800q146 0 266 81.5T920-500q-54 137-174 218.5T480-200Zm0-300Zm0 220q113 0 207.5-59.5T832-500q-50-101-144.5-160.5T480-720q-113 0-207.5 59.5T88-500q50 101 144.5 160.5T480-280Z"/></svg>
+      </span>
+    </div>
+    
+    <button id="btnLoginSubmit" class="btn-login" onclick="prosesValidasiLogin()">MASUK</button>
+  </div>
+</div>
+
+<div id="overlay" class="overlay" onclick="closeNav()"></div>
+<div id="mySidebar" class="sidebar">
+  <div class="closebtn" onclick="closeNav()">×</div>
+  <div class="sidebar-header">
+    <div class="sidebar-title">INVENTORY MANAGEMENT<br>SYSTEM</div>
+    <div class="sidebar-subtitle">UNIT LAYANAN PLTD SEI RAYA</div>
+    <div id="userBadge" style="margin-top:12px; font-size:12px; background:rgba(255,255,255,0.2); padding:5px 10px; border-radius:6px; display:inline-block; font-weight:600;">👤 User: -</div>
+  </div>
+  <a href="#" onclick="showHome()">🏠 Home</a>
+  <a href="#" onclick="showCariMaterial()">🔍 Cari Material</a>
+  <a href="#" id="menuMaterialMasuk" onclick="showMaterialMasuk()">📥 Penerimaan Material</a>
+  <a href="#" id="menuMaterialKeluar" onclick="showMaterialKeluar()">📤 Pengeluaran Material</a>
+  <a href="#" onclick="showMonitoringMaterial()">📊 Monitoring Material</a>
+  <a href="#" id="menuGenerateQR" onclick="showGenerateQR()">🔳 Generate QR</a>
+  <a href="#" id="menuInputMaterialBaru" onclick="showInputMaterialBaru()">➕ Input Material Baru</a>
+  <a href="#" onclick="showLogAktivitas()">📜 Log Aktivitas</a> 
+  <a href="#" onclick="eksekusiLogout()" style="border-top:1px solid #eee; margin-top:20px; color:#dc3545; font-weight:700;">🚪 Keluar</a>
+</div>
+
+<div id="mainHeader" class="header">
+  <div class="header-top">
+    <div class="logomkp"><img src="https://mitrakaryaprima.com/wp-content/uploads/2023/12/logo-mkp-berwarna.png"></div>
+    <div class="datetime"><div id="tanggalLengkap"></div><div id="jam"></div></div>
+    <div class="logo"><img src="https://www.plnnusantarapower.co.id/images/logo-pln.png"></div>
+  </div>
+</div>
+<div id="mainMenuContainer" class="menu-container">
+  <div id="menuButton" class="menu" onclick="openNav()">☰</div>
+</div>
+
+<div class="content fade-in" id="homePage">
+  <div class="content-wrapper">
+    <div class="title">INVENTORY MANAGEMENT SYSTEM</div>
+    <div class="subtitle">UNIT LAYANAN PLTD SEI RAYA</div>
+    <div class="description">Transformasi Digital Material dan Sparepart<br>untuk Mendukung Keandalan Operasi Pembangkit<br>Berbasis QRCode</div>
+  </div>
+</div>
+
+<div id="searchPage" class="search-page fade-in">
+  <div class="search-box-sticky">
+    <h2>Cari Material Database</h2>
+    <div class="search-container">
+      <div class="search-input-wrapper"><span class="search-icon">🔍</span><input type="text" id="keywordCari" placeholder="Masukkan Stock Code / Item Name / Part Number"></div>
+      <button onclick="cariMaterial()">Cari</button>
+      <button onclick="toggleKamera('Cari')" style="background:#28a745;">📷 Scan QR</button>
+      <button onclick="refreshCari()" title="Refresh" style="background:#6c757d;">🔄</button>
+      <button onclick="resetCari()" title="Reset" style="background:#dc3545;">🧹</button>
+    </div>
+  </div>
+  <div class="scrollable-content-area" id="hasilCari" style="max-height: 65vh !important; overflow-y: auto !important; display: block !important; padding-bottom: 20px;"></div>
+</div>
+
+<div id="materialMasukPage" class="search-page fade-in">
+  <div class="search-box-sticky">
+    <h2>📥 Penerimaan Material</h2>
+    <p>Cari material atau scan QR label rak terlebih dahulu.</p>
+    <div class="search-container">
+      <div class="search-input-wrapper"><span class="search-icon">🔍</span><input type="text" id="keywordMasuk" placeholder="Masukkan Stock Code / Item Name / Part Number"></div>
+      <button onclick="cariMaterialMasuk()">Cari</button>
+      <button onclick="toggleKamera('Masuk')" style="background:#28a745;">📷 Scan QR</button>
+    </div>
+  </div>
+  <div class="scrollable-content-area" id="hasilMaterialMasuk"></div>
+</div>
+
+<div id="materialKeluarPage" class="search-page fade-in">
+  <div class="search-box-sticky">
+    <h2>📤 Pengeluaran Material</h2>
+    <p>Cari material atau scan QR label rak terlebih dahulu.</p>
+    <div class="search-container">
+      <div class="search-input-wrapper"><span class="search-icon">🔍</span><input type="text" id="keywordKeluar" placeholder="Masukkan Stock Code / Item Name / Part Number"></div>
+      <button onclick="cariMaterialKeluar()">Cari</button>
+      <button onclick="toggleKamera('Keluar')" style="background:#28a745;">📷 Scan QR</button>
+    </div>
+  </div>
+  <div class="scrollable-content-area" id="hasilMaterialKeluar"></div>
+</div>
+
+<div id="monitoringPage" class="search-page fade-in">   
+  <div class="search-box-sticky">
+    <h2>📊 Monitoring Material</h2>
+    <div class="search-container">
+      <div class="search-input-wrapper"><span class="search-icon">🔍</span><input type="text" id="keywordMonitoring" placeholder="Cari Stock Code / Item Name / Part Number"></div>
+      <select id="filterKategoriMonitoring" onchange="loadMonitoringMaterial()">
+        <option value="">-- Semua Kategori --</option>
+        <option value="MEKANIK">Mekanik</option>
+        <option value="ELEKTRIK">Elektrik</option>
+        <option value="CONSUMABLE">Consumable</option>
+        <option value="KIMIA">Kimia</option>
+        <option value="PELUMAS">Pelumas</option>
+      </select>
+      <button onclick="loadMonitoringMaterial()">Cari</button>
+    </div>
+  </div>
+  <div id="monitoringSummaryContainer" class="monitoring-summary"></div>
+
+  <style>
+    #monitoringPage .table-scroll-container {
+      width: 98% !important;         /* Memperlebar ukuran kiri dan kanan tabel ke ujung layar */
+      max-width: 100% !important;     /* Membebaskan batas melar kontainer */
+      margin: 0 auto;
+    /*  max-height: 50vh !important;    /* Relatif terhadap tinggi layar, bukan px tetap */
+    /*  overflow-y: auto !important;    /* Scrollbar Atas-Bawah HIDUP */
+      overflow-x: auto !important;  /* Scrollbar Kiri-Kanan MATI TOTAL */
+	  -webkit-overflow-scrolling: touch; /* Biar smooth di iOS */
+    }
+    
+    #monitoringPage .monitoring-table {
+      width: 100% !important;
+      border-collapse: separate;
+      border-spacing: 0;
+    }
+
+    #monitoringPage .monitoring-table th, 
+    #monitoringPage .monitoring-table td {
+      padding: 8px 6px !important;   /* Memperkecil padding dalam sel agar muat satu baris layar */
+      font-size: 11.5px !important;    /* Menyesuaikan ukuran font sedikit agar pas tanpa kepotong */
+      text-align: left;
+    }
+  </style>
+
+  <div class="scrollable-content-area" id="monitoringResult"></div>
+</div>
+
+<div id="generateQRPage" class="search-page fade-in">
+  <div class="search-box-sticky">
+    <h2>🔳 Generate QR Material</h2>
+    <p>Cari material berdasarkan Stock Code atau Item Name untuk membuat QR Code Label Rak.</p>
+    <div class="search-container">
+      <div class="search-input-wrapper"><span class="search-icon">🔍</span><input type="text" id="keywordQR" placeholder="Masukkan Stock Code / Item Name"></div>
+      <button onclick="cariMaterialQR()">Cari</button>
+    </div>
+  </div>
+  <div class="scrollable-content-area" id="hasilQR" style="max-height: 65vh !important; overflow-y: auto !important; display: block !important; padding-bottom: 20px; margin-top: 20px;"></div>
+</div>
+
+<div id="logAktivitasPage" class="search-page fade-in">
+  <div class="search-box-sticky">
+    <h2>📜 Log Aktivitas Sistem</h2>
+    <div class="search-container">
+      <div class="search-input-wrapper"><span class="search-icon">🔍</span><input type="text" id="keywordLog" placeholder="Cari Stock Code / Item Name / Petugas..." onkeyup="prosesDanTampilkanLog()"></div>
+      <select id="filterBulanLog" class="select-filter-log" onchange="prosesDanTampilkanLog()">
+        <option value="ALL">-- Semua Bulan --</option>
+        <option value="01">Januari</option><option value="02">Februari</option><option value="03">Maret</option><option value="04">April</option><option value="05">Mei</option><option value="06">Juni</option><option value="07">Juli</option><option value="08">Agustus</option><option value="09">September</option><option value="10">Oktober</option><option value="11">November</option><option value="12">Desember</option>
+      </select>
+      <select id="filterTahunLog" class="select-filter-log" onchange="prosesDanTampilkanLog()">
+        <option value="ALL">-- Semua Tahun --</option>
+        <option value="2025">2025</option><option value="2026">2026</option><option value="2027">2027</option><option value="2028">2028</option>
+      </select>
+      <button onclick="loadLogAktivitas()">🔄 Refresh</button>
+    </div>
+  </div>
+  <div id="logSummaryContainer" class="monitoring-summary"></div>
+  <div class="scrollable-content-area" id="logResult"></div>
+</div>
+
+<!-- BUKA FORM REGISTRASI MATERIAL BARU -->
+
+<div id="inputMaterialBaruPage" class="search-page fade-in">
+  <div class="search-box-sticky">
+    <h2>➕ Registrasi Material Baru</h2>
+    <p>Silakan lengkapi formulir di bawah ini untuk menambahkan item sparepart/material baru ke dalam sistem database.</p>
+  </div>
+  
+  <style>
+     #inputMaterialBaruPage .scrollable-content-area:-webkit-scrollbar { display: none; }
+  </style>
+  <div class="scrollable-content-area" style="-ms-overflow-style: none; scrollbar-width: none; padding-bottom: 10px;">
+    
+    <div id="materialBaruCard" class="result-card fade-in" style="margin: 0 auto; padding: 25px;">
+      <div id="formMaterialBaruGrid" style="display:grid; grid-template-columns: repeat(2, 1fr); gap:16px; margin-bottom:20px; text-align: left;">
+        
+        <div style="display:flex; flex-direction:column;">
+          <b style="font-size:12px; margin-bottom:6px; color:#555;">STOCK CODE <span style="color:red;">*</span></b>
+          <input type="text" id="newStockCode" placeholder="Contoh: SC-00921" style="height:42px; border-radius:6px; border:1px solid #cbd5e1; padding:0 12px; font-family:'Poppins',sans-serif; text-transform: uppercase;">
+        </div>
+        
+        <div style="display:flex; flex-direction:column;">
+          <b style="font-size:12px; margin-bottom:6px; color:#555;">ITEM NAME / NAMA BARANG <span style="color:red;">*</span></b>
+          <input type="text" id="newItemName" placeholder="Contoh: O-RING" style="height:42px; border-radius:6px; border:1px solid #cbd5e1; padding:0 12px; font-family:'Poppins',sans-serif; text-transform: uppercase;">
+        </div>
+        
+        <div style="display:flex; flex-direction:column;">
+          <b style="font-size:12px; margin-bottom:6px; color:#555;">PART NUMBER / ENGINE TYPE</b>
+          <input type="text" id="newPartNumber" placeholder="Contoh: KS 27210 / SULZER" style="height:42px; border-radius:6px; border:1px solid #cbd5e1; padding:0 12px; font-family:'Poppins',sans-serif; text-transform: uppercase;">
+        </div>
+        
+        <div style="display:flex; flex-direction:column;">
+          <b style="font-size:12px; margin-bottom:6px; color:#555;">CATEGORY / KATEGORI <span style="color:red;">*</span></b>
+          <input type="text" id="newCategory" placeholder="Contoh: MEKANIK / ELEKTRIK / CONSUMABLE" style="height:42px; border-radius:6px; border:1px solid #cbd5e1; padding:0 12px; font-family:'Poppins',sans-serif; text-transform: uppercase;">
+        </div>
+        
+        <div style="display:flex; flex-direction:column;">
+          <b style="font-size:12px; margin-bottom:6px; color:#555;">SATUAN BARANG <span style="color:red;">*</span></b>
+          <input type="text" id="newSatuan" placeholder="Contoh: PCS / SET / LTR" style="height:42px; border-radius:6px; border:1px solid #cbd5e1; padding:0 12px; font-family:'Poppins',sans-serif; text-transform: uppercase;">
+        </div>
+
+        <div style="display:flex; flex-direction:column;">
+          <b style="font-size:12px; margin-bottom:6px; color:#555;">LOKASI RAK / PENYIMPANAN <span style="color:red;">*</span></b>
+          <input type="text" id="newLokasiRak" placeholder="Contoh: RAK-A2-LEVEL 3" style="height:42px; border-radius:6px; border:1px solid #cbd5e1; padding:0 12px; font-family:'Poppins',sans-serif; text-transform: uppercase;">
+        </div>
+        
+        <div style="display:flex; flex-direction:column;">
+          <b style="font-size:12px; margin-bottom:6px; color:#555;">KETERANGAN KONTRAK <span style="color:red;">*</span></b>
+          <select id="newKeteranganKontrak" style="height:42px; border-radius:6px; border:1px solid #cbd5e1; padding:0 12px; font-family:'Poppins',sans-serif; background: white; cursor: pointer;">
+            <option value="">-- Pilih Status Kontrak --</option>
+            <option value="MATERIAL SUDAH TERKONTRAK">MATERIAL SUDAH TERKONTRAK</option>
+            <option value="MATERIAL BELUM TERKONTRAK">MATERIAL BELUM TERKONTRAK</option>
+            <option value="STOCK MATERIAL KEANDALAN">STOCK MATERIAL KEANDALAN</option>
+
+          </select>
+        </div>
+
+        <div style="display:flex; flex-direction:column;">
+          <b style="font-size:12px; margin-bottom:6px; color:#555;">STOK AWAL GUDANG / FISIK</b>
+          <input type="number" id="newStokAwal" value="0" min="0" style="height:42px; border-radius:6px; border:1px solid #cbd5e1; padding:0 12px; font-family:'Poppins',sans-serif;">
+        </div>
+
+        <div style="display:flex; flex-direction:column; grid-column: 1 / -1;">
+          <b style="font-size:12px; margin-bottom:6px; color:#555;">LINK URL FOTO MATERIAL</b>
+          <input type="text" id="newPhotoUrl" placeholder="Tempel link url gambar jika ada" style="height:42px; border-radius:6px; border:1px solid #cbd5e1; padding:0 12px; font-family:'Poppins',sans-serif;">
+        </div>
+
+      </div>
+      
+      <button id="btnSimpanMaterialBaru" style="width:100%; height:48px; border-radius:8px; border:none; background:#0F4C81; color:white; font-weight:700; cursor:pointer; font-family:'Poppins',sans-serif; font-size:15px; letter-spacing:0.5px;" onclick="prosesSimpanMaterialBaru()">💾 REGISTER MATERIAL BARU</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="footer">Inventory Management System | IMS | Version 1.0</div>
+
+<div id="imgModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);justify-content:center;align-items:center;z-index:99999; backdrop-filter: blur(5px);" onclick="closeImage()">
+  <img id="imgPreview" style="max-width:90%;max-height:90%;border-radius:12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+</div>
+
+<script src="api.js"></script>
+<script>
+// FIX ERROR LOAD DATA LINE 827 - 989
+//let globalMonitoringData = []; 
+//let currentStatusFilter = "ALL"; 
+//let lastKeyword = '';
+
+function dapatkanHtmlLoader() { 
+    return `<div class="loader-container fade-in"><div class="spinner"></div><div style="font-size:14px;color:#666;font-weight:600;">Memproses database sistem...</div></div>`; 
+}
+
+function bukaModalAlert(pesan) { 
+    if (typeof Swal !== 'undefined') {
+        Swal.fire({ icon: 'error', title: 'Oops...', text: pesan, confirmButtonColor: '#0F4C81', confirmButtonText: 'Mengerti' }); 
+    } else {
+        alert(pesan);
+    }
+}
+
+function showToast(pesan) { 
+    if (typeof Swal !== 'undefined') {
+        Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: pesan, showConfirmButton: false, timer: 3000, timerProgressBar: true }); 
+    } else {
+        alert(pesan);
+    }
+}
+
+function openImage(src){ 
+    document.getElementById('imgPreview').src = src; 
+    document.getElementById('imgModal').style.display = 'flex'; 
+}
+
+function closeImage(){ 
+    document.getElementById('imgModal').style.display = 'none'; 
+}
+
+// =========================================================================
+// 🔒 KONTROL HAK AKSES BERDASARKAN ROLE (ADMIN vs VIEWER)
+// Catatan: ini HANYA mengatur tampilan (UX). Penegakan yang sesungguhnya
+// tetap dilakukan di server (code.gs) setiap kali action tulis dipanggil,
+// supaya tidak bisa dilewati lewat console/devtools.
+// =========================================================================
+const MENU_ADMIN_ONLY = ["menuMaterialMasuk", "menuMaterialKeluar", "menuGenerateQR", "menuInputMaterialBaru"];
+
+function terapkanHakAksesMenu() {
+  const role = (localStorage.getItem("ims_user_role") || "ADMIN").toUpperCase();
+  MENU_ADMIN_ONLY.forEach(function(id){
+    const el = document.getElementById(id);
+    if (el) el.style.display = (role === "ADMIN") ? "block" : "none";
+  });
+}
+
+// Dipanggil di awal setiap halaman khusus admin (Penerimaan, Pengeluaran, Generate QR, Input Material Baru).
+// Kalau user VIEWER mencoba mengakses lewat cara lain (mis. console), tetap ditolak di sini.
+function cekAksesAdmin() {
+  const role = (localStorage.getItem("ims_user_role") || "ADMIN").toUpperCase();
+  if (role !== "ADMIN") {
+    showToast("⛔ Akun ini tidak memiliki hak akses ke menu tersebut.");
+    showHome();
+    closeNav();
+    return false;
+  }
+  return true;
+}
+
+function applyFadeIn(elementId) { 
+    const el = document.getElementById(elementId); 
+    if(el) { 
+        el.classList.remove("fade-in"); 
+        void el.offsetWidth; 
+        el.classList.add("fade-in"); 
+        el.style.display = 'flex'; 
+    } 
+}
+
+function updateDateTime(){
+  const now = new Date(); 
+  const hari = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"]; 
+  const bulan = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+  const tglElement = document.getElementById("tanggalLengkap"); 
+  const jamElement = document.getElementById("jam");
+  if(tglElement) tglElement.innerHTML = hari[now.getDay()] + ", " + now.getDate() + " " + bulan[now.getMonth()] + " " + now.getFullYear();
+  if(jamElement) jamElement.innerHTML = now.toLocaleTimeString("id-ID") + " WIB";
+}
+setInterval(updateDateTime, 1000); 
+updateDateTime();
+
+// [FIXED] Fungsi memunculkan halaman log + Set default filter ALL
+function showLogAktivitas(){ 
+  hideAllSections(); 
+  applyFadeIn('logAktivitasPage'); 
+  document.getElementById('keywordLog').value = ''; 
+  currentLogFilter = "ALL"; // Pastikan variabel ini diset awal agar tidak error
+  loadLogAktivitas(); 
+  closeNav(); 
+}
+
+// [FIX] Load Log Aktivitas via API
+async function loadLogAktivitas(){
+  document.getElementById("logResult").innerHTML = dapatkanHtmlLoader();
+  
+  // 🚀 Tembak API
+  const data = await panggilAPI("getLogDataSistem");
+  
+  if(data && data.success === false) {
+      document.getElementById("logResult").innerHTML = '<p style="color:red;">Gagal memuat log aktivitas.</p>';
+  } else {
+      globalLogData = data || [];
+      prosesDanTampilkanLog();
+  }
+}
+
+// [FIXED] Tambahkan fungsi pengatur filter card klik
+function setLogFilter(filterType) {
+  currentLogFilter = filterType;
+  prosesDanTampilkanLog();
+}
+
+// [FIXED TOTAL] Fungsi render Log Aktivitas dengan proteksi try-catch berlapis
+function prosesDanTampilkanLog(){
+  try {
+    const elKey = document.getElementById("keywordLog");
+    const elBulan = document.getElementById("filterBulanLog");
+    const elTahun = document.getElementById("filterTahunLog");
+
+    const key = elKey ? elKey.value.toLowerCase().trim() : "";
+    const filterBulan = elBulan ? elBulan.value : "ALL";
+    const filterTahun = elTahun ? elTahun.value : "ALL";
+    
+    let filteredData = Array.isArray(globalLogData) ? [...globalLogData] : [];
+    
+    let totalTransaksi = filteredData.length;
+    let totalMasuk = 0;
+    let totalKeluar = 0;
+    let totalBaru = 0;
+    
+    filteredData.forEach(r => {
+      if (r && r.aksi) {
+        let aks = String(r.aksi).toUpperCase();
+        if(aks.includes("MASUK") || aks.includes("TERIMA")) totalMasuk++;
+        else if(aks.includes("KELUAR")) totalKeluar++;
+        else if(aks.includes("BARU")) totalBaru++;
+      }
+    });
+    
+    const containerSummary = document.getElementById("logSummaryContainer");
+    if (containerSummary) {
+      containerSummary.innerHTML = `
+        <div class="summary-card fade-in ${currentLogFilter === 'ALL' ? 'active-filter' : ''}" onclick="setLogFilter('ALL')">
+          <div class="card-title">📝 Total Transaksi</div><div class="card-value">${totalTransaksi} <span style="font-size:12px; font-weight:normal; color:#888;">Log</span></div>
+        </div>
+        <div class="summary-card normal fade-in ${currentLogFilter === 'MASUK' ? 'active-filter' : ''}" onclick="setLogFilter('MASUK')">
+          <div class="card-title">📥 Penerimaan</div><div class="card-value" style="color:#27ae60;">${totalMasuk} <span style="font-size:12px; font-weight:normal; color:#888;">Data</span></div>
+        </div>
+        <div class="summary-card habis fade-in ${currentLogFilter === 'KELUAR' ? 'active-filter' : ''}" onclick="setLogFilter('KELUAR')">
+          <div class="card-title">📤 Pengeluaran</div><div class="card-value" style="color:#cb4335;">${totalKeluar} <span style="font-size:12px; font-weight:normal; color:#888;">Data</span></div>
+        </div>
+        <div class="summary-card minimum fade-in ${currentLogFilter === 'BARU' ? 'active-filter' : ''}" onclick="setLogFilter('BARU')">
+          <div class="card-title">➕ Registrasi Baru</div><div class="card-value" style="color:#f39c12;">${totalBaru} <span style="font-size:12px; font-weight:normal; color:#888;">Item</span></div>
+        </div>`;
+    }
+
+    if(key) {
+      filteredData = filteredData.filter(r => 
+        String(r.stockCode || '').toLowerCase().includes(key) ||
+        String(r.itemName || '').toLowerCase().includes(key) ||
+        String(r.partNumber || '').toLowerCase().includes(key) ||
+        String(r.petugas || '').toLowerCase().includes(key) ||
+        String(r.keterangan || '').toLowerCase().includes(key) ||
+        String(r.statusMaterial || '').toLowerCase().includes(key)
+      );
+    }
+
+    if(currentLogFilter === "MASUK") {
+      filteredData = filteredData.filter(r => r && r.aksi && (String(r.aksi).toUpperCase().includes("MASUK") || String(r.aksi).toUpperCase().includes("TERIMA")));
+    } else if(currentLogFilter === "KELUAR") {
+      filteredData = filteredData.filter(r => r && r.aksi && String(r.aksi).toUpperCase().includes("KELUAR"));
+    } else if(currentLogFilter === "BARU") {
+      filteredData = filteredData.filter(r => r && r.aksi && String(r.aksi).toUpperCase().includes("BARU"));
+    }
+
+    if(filterBulan !== "ALL") {
+      filteredData = filteredData.filter(r => {
+        if (!r || !r.tanggal) return false;
+        let tglStr = String(r.tanggal);
+        let pemisah = tglStr.includes('/') ? '/' : '-';
+        let parts = tglStr.split(pemisah);
+        if(parts.length >= 2) {
+          let bulanPart = parts[1].trim().substring(0, 2);
+          return bulanPart === filterBulan;
+        }
+        return tglStr.includes(pemisah + filterBulan + pemisah);
+      });
+    }
+
+    if(filterTahun !== "ALL") {
+      filteredData = filteredData.filter(r => r && r.tanggal && String(r.tanggal).includes(filterTahun));
+    }
+
+    // [PERBAIKAN TAJUK]: Menambahkan kolom Status Material di header tabel
+    let html = `<div class="table-scroll-container fade-in"><table class="monitoring-table">
+                  <thead>
+                    <tr>
+                      <th>No.</th>
+                      <th>Tanggal</th>
+                      <th>Item Name</th>
+                      <th>Stock Code</th>
+                      <th>No. Part / Engine</th>
+                      <th>Category</th>
+                      <th>Satuan</th>
+                      <th>Jumlah</th>
+                      <th>Balance</th>
+                      <th>Pemakaian / Ket</th>
+                      <th>Status Material</th>
+                      <th>Aksi</th>
+                      <th>Petugas Gudang</th>
+                    </tr>
+                  </thead>
+                  <tbody>`;
+
+    if(filteredData.length === 0) {
+      // [PERBAIKAN COLSPAN]: Diubah jadi 13 karena kolom sekarang berjumlah 13 (termasuk No s.d Petugas)
+      html += `<tr><td colspan="13" style="text-align:center; padding:20px; background:#fff;">Log transaksi tidak ditemukan.</td></tr>`;
+    } else {
+      filteredData.forEach(r => {
+        if (!r) return;
+        let warnaAksi = "#555";
+        let barisWarna = "transparent";
+        let aks = String(r.aksi || '').toUpperCase();
+        
+        if(aks.includes("MASUK") || aks.includes("TERIMA")) { warnaAksi = "#27ae60"; barisWarna = "#f4fbf7"; }
+        else if(aks.includes("KELUAR")) { warnaAksi = "#e74c3c"; barisWarna = "#fff5f5"; }
+        else if(aks.includes("BARU")) { warnaAksi = "#f39c12"; barisWarna = "#fffde6"; } 
+
+        // [PERBAIKAN ROW CELL]: Menambahkan cell data r.statusMaterial tepat setelah keterangan
+        html += `<tr style="background:${barisWarna};">
+                  <td>${r.no || '-'}</td>
+                  <td>${r.tanggal || '-'}</td>
+                  <td><b>${r.itemName || '-'}</b></td>
+                  <td><b style="color:#0F4C81;">${r.stockCode || '-'}</b></td>
+                  <td>${r.partNumber || '-'}</td>
+                  <td>${r.category || '-'}</td>
+                  <td>${r.satuan || '-'}</td>
+                  <td style="font-weight:700;">${r.jumlah || 0}</td>
+                  <td style="font-weight:800; color:#0F4C81;">${r.balance ?? '-'}</td>
+                  <td style="text-transform: uppercase; font-size:12px;">${r.keterangan || '-'}</td>
+                  <td style="font-weight:600; font-size:12px; color:#444;">${r.statusMaterial || '-'}</td>
+                  <td><span style="background:${warnaAksi}; color:white; padding:3px 8px; border-radius:4px; font-size:11px; font-weight:700;">${aks}</span></td>
+                  <td>👤 ${r.petugas || '-'}</td>
+                 </tr>`;
+      });
+    }
+    
+    const containerResult = document.getElementById("logResult");
+    if (containerResult) {
+      containerResult.innerHTML = html + `</tbody></table></div>`;
+    }
+  } catch (error) {
+    console.error("Error pada render log:", error);
+    const containerResult = document.getElementById("logResult");
+    if (containerResult) {
+      containerResult.innerHTML = `<p style="color:red; padding:20px;">Terjadi kesalahan internal saat merender tabel log: ${error.message}</p>`;
+    }
+  }
+}
+
+// -------------------------------------------------------------------------
+// [FIX] Validasi Login via API GitHub Pages
+// -------------------------------------------------------------------------
+async function prosesValidasiLogin() {
+    const btn = document.getElementById("btnLoginSubmit");
+    const user = document.getElementById("loginUser").value.trim();
+    const pass = document.getElementById("loginPass").value.trim();
+
+    // Validasi kosong
+    if (user === "" || pass === "") {
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal Login',
+            text: 'Username atau Password tidak boleh kosong, Silakan cek kembali.',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#0F4C81',
+        });
+        return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = "⏳ MEMVALIDASI...";
+
+    // 🚀 TEMBAK API KE GOOGLE SHEETS
+    const res = await panggilAPI("checkLogin", { username: user, password: pass });
+
+    btn.disabled = false;
+    btn.innerHTML = "MASUK";
+
+    // Cek balasan dari API
+    if (res && res.success) {
+        localStorage.setItem("ims_login_time", new Date().getTime());
+        localStorage.setItem("ims_user_name", res.nama);
+        localStorage.setItem("ims_username", user);
+        localStorage.setItem("ims_user_role", (res.role || "ADMIN").toUpperCase());
+        document.getElementById("loginPage").style.display = "none";
+        document.getElementById("userBadge").innerText = "👤 User: " + res.nama;
+        terapkanHakAksesMenu();
+        showHome();
+		jalankanPemicuAutoLogoutMurni();
+        cekDeepLinkingUrl();
+    } else {
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal Login',
+            text: res?.message || 'Username atau Password salah, Silakan cek kembali.',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#0F4C81'
+        });
+    }
+}
+
+// [FIX] Fungsi Toggle Password menggunakan SVG Mata Custom
+function togglePassword() {
+    const x = document.getElementById("loginPass");
+    const iconClosed = document.getElementById("iconEyeClosed");
+    const iconOpen = document.getElementById("iconEyeOpen");
+    
+    if (x.type === "password") {
+        x.type = "text";
+        iconClosed.style.display = "none";
+        iconOpen.style.display = "block"; // Munculkan mata terbuka
+    } else {
+        x.type = "password";
+        iconClosed.style.display = "block"; // Munculkan mata tertutup (dicoret)
+        iconOpen.style.display = "none";
+    }
+}
+
+function eksekusiLogout() {
+  Swal.fire({ 
+      title: 'Keluar Aplikasi?', text: "Anda harus login kembali untuk mengakses sistem.", icon: 'warning', showCancelButton: true, confirmButtonColor: '#d33', cancelButtonColor: '#6c757d', confirmButtonText: 'Ya, Keluar' 
+  }).then((result) => {
+    if (result.isConfirmed) { 
+        localStorage.clear(); 
+        document.getElementById("loginUser").value = ""; 
+        document.getElementById("loginPass").value = ""; 
+        document.getElementById("loginPage").style.display = "flex"; 
+        closeNav(); 
+    }
+  });
+}
+
+// -------------------------------------------------------------------------
+// Penanganan Sesi Login Maksimal 30 Menit
+// -------------------------------------------------------------------------
+
+// 1. Variabel Global penyimpan waktu (dalam milidetik)
+const BATAS_IDLE = 30 * 60 * 1000; // 30 Menit
+	let waktuAktivitasTerakhir = Date.now();
+
+function jalankanPemicuAutoLogoutMurni() {
+    // 2. Catat waktu saat fungsi ini pertama kali dipanggil (misal saat baru masuk halaman)
+    waktuAktivitasTerakhir = Date.now();
+    
+    // 3. Bersihkan mesin timer lama jika sebelumnya pernah berjalan
+    if (window.mesinTimerIMS) clearInterval(window.mesinTimerIMS);
+
+    // 4. Fungsi sakti untuk me-reset waktu setiap ada pergerakan user
+    const resetAktivitas = () => { 
+        waktuAktivitasTerakhir = Date.now(); 
+    };
+
+    // 5. Pasang mata-mata di seluruh halaman. 
+    // Kalau ada klik, gerakan mouse, ketikan, scroll, atau sentuhan layar HP -> RESET WAKTU!
+    window.onmousemove = resetAktivitas;
+    window.onmousedown = resetAktivitas;
+    window.ontouchstart = resetAktivitas;
+    window.onclick = resetAktivitas;
+    window.onkeypress = resetAktivitas;
+    window.onscroll = resetAktivitas;
+
+    // 6. Mesin Pengecek yang kebal Throttling (Cek setiap 3 detik agar lebih ringan)
+    window.mesinTimerIMS = setInterval(function() {
+        const waktuSekarang = Date.now();
+        const durasiIdle = waktuSekarang - waktuAktivitasTerakhir;
+
+        // Jika rentang waktu menganggur sudah melampaui batas 30 menit
+        if (durasiIdle >= BATAS_IDLE) {
+            clearInterval(window.mesinTimerIMS); // Matikan mesin
+            
+            // Tembak Pop-Up Sesi Berakhir
+            Swal.fire({
+                title: 'Sesi Telah Berakhir!',
+                text: 'Anda telah tidak aktif selama 30 menit. Demi keamanan, silakan login kembali.',
+                icon: 'warning',
+                confirmButtonColor: '#0F4C81',
+                confirmButtonText: 'Login Ulang',
+                allowOutsideClick: false,
+                allowEscapeKey: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+               	  	// [FIX] Hapus sesi dan paksa kembali ke layar login
+                    localStorage.clear(); 
+                    window.location.reload();
+                }
+            });
+        }
+    }, 3000); 
+}
+
+// -------------------------------------------------------------------------
+// NAVIGATION (MENUS)
+// -------------------------------------------------------------------------
+function openNav() { document.getElementById('mySidebar').style.width='320px'; document.getElementById('overlay').style.display='block'; }
+function closeNav() { document.getElementById('mySidebar').style.width='0'; document.getElementById('overlay').style.display='none'; }
+
+// [FIX PENTING] Hapus loginPage dari array hideAllSections agar form login bisa muncul pas dimuat pertama kali!
+function hideAllSections(){ 
+    const pages = ['homePage','searchPage','generateQRPage','materialMasukPage','materialKeluarPage','monitoringPage', 'logAktivitasPage', 'inputMaterialBaruPage'];
+    pages.forEach(id => { 
+        const el = document.getElementById(id); 
+        if(el) el.style.display='none'; 
+    }); 
+}
+
+function showHome(){ hideAllSections(); applyFadeIn('homePage'); closeNav(); }
+function showCariMaterial(){ hideAllSections(); applyFadeIn('searchPage'); document.getElementById('keywordCari').value=''; document.getElementById('hasilCari').innerHTML=''; closeNav(); document.getElementById('keywordCari').focus(); }
+function showGenerateQR(){ if(!cekAksesAdmin()) return; hideAllSections(); applyFadeIn('generateQRPage'); document.getElementById('keywordQR').value=''; document.getElementById('hasilQR').innerHTML=''; closeNav(); document.getElementById('keywordQR').focus(); }
+
+function showMaterialMasuk(){ 
+    if(!cekAksesAdmin()) return;
+    hideAllSections(); 
+    applyFadeIn('materialMasukPage'); 
+    document.getElementById('keywordMasuk').value=''; 
+    document.getElementById('hasilMaterialMasuk').innerHTML=''; 
+    closeNav(); 
+    
+    // Auto Search jika menu dipanggil akibat Stok Kosong
+    const pendingCode = localStorage.getItem('pending_receive_code');
+    if(pendingCode) {
+        document.getElementById('keywordMasuk').value = pendingCode;
+        cariMaterialMasuk();
+        localStorage.removeItem('pending_receive_code');
+    } else {
+        document.getElementById('keywordMasuk').focus(); 
+    }
+}
+
+function showMaterialKeluar(){ if(!cekAksesAdmin()) return; hideAllSections(); applyFadeIn('materialKeluarPage'); document.getElementById('keywordKeluar').value=''; document.getElementById('hasilMaterialKeluar').innerHTML=''; closeNav(); document.getElementById('keywordKeluar').focus(); }
+
+
+// =========================================================================
+// 🚀 REWRITE UTUH: FUNGSI HALAMAN MONITORING BARU (100% SINKRON BACKEND)
+// =========================================================================
+
+// 1. DAFTARKAN VARIABEL GLOBAL DI LUAR FUNGSI (Sangat Krusial!)
+var globalMonitoringData = [];
+var currentStatusFilter = "ALL";
+
+// 2. FUNGSI MENAMPILKAN HALAMAN
+function showMonitoringMaterial() {
+  hideAllSections(); 
+  applyFadeIn('monitoringPage'); 
+  
+  // Pengaman: Cek elemen input ada atau tidak sebelum direset
+  let inputKeyword = document.getElementById('keywordMonitoring');
+  if (inputKeyword) {
+      inputKeyword.value = ''; 
+  }
+  
+  currentStatusFilter = "ALL"; 
+  loadMonitoringMaterial(); 
+  closeNav(); 
+  
+  if (inputKeyword) {
+      inputKeyword.focus(); 
+  }
+}
+
+// 3. [FIX] Load Monitoring via API
+async function loadMonitoringMaterial() {
+  let boxResult = document.getElementById("monitoringResult");
+  
+  if (boxResult) {
+      boxResult.innerHTML = `
+        <div style="text-align:center; padding:40px;">
+          <div style="border: 4px solid #f3f3f3; border-top: 4px solid #0F4C81; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: auto;"></div>
+          <p style="margin-top:15px; color:#555; font-weight:500;">Menarik data dari database...</p>
+        </div>
+        <style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
+      `;
+  }
+  
+  // 🚀 Tembak API
+  const data = await panggilAPI("getMonitoringData");
+  
+  if(data && data.success === false) {
+      if(boxResult) boxResult.innerHTML = '<p style="text-align:center; color:#cb4335; padding:20px; font-weight:bold;">🚨 Gagal memuat data dari database. Silakan refresh halaman.</p>';
+  } else {
+      globalMonitoringData = data || [];
+      prosesDanTampilkanTabel();
+  }
+}
+
+// 4. FUNGSI KLIK FILTER
+function setMonitoringFilter(statusType) { 
+    currentStatusFilter = statusType; 
+    prosesDanTampilkanTabel(); 
+}
+
+// 5. FUNGSI PEMROSESAN & RENDER TABEL
+function prosesDanTampilkanTabel() {
+  let inputElement = document.getElementById("keywordMonitoring");
+  let key = inputElement ? inputElement.value.toLowerCase().trim() : ""; 
+  
+  // Ambil data dropdown kategori
+  let inputKategori = document.getElementById("filterKategoriMonitoring");
+  let kat = inputKategori ? inputKategori.value.toLowerCase().trim() : "";
+
+  // 1. Kloning data awal database
+  let filteredData = [...globalMonitoringData];
+
+  // ==========================================================================
+  // 🔥 LANGKAH SAKTI 1: JALANKAN FILTER KATEGORI DI AWAL (BIAR CARD SINKRON!)
+  // ==========================================================================
+  if(kat) {
+      filteredData = filteredData.filter(r => {
+        let kategoriBarang = String(r.category || r.itemName || '').toLowerCase();
+        return kategoriBarang.includes(kat);
+      });
+  }
+
+  // 2. Siapkan variabel penampung hitungan metrik card (+ totalSelisih)
+  let totalItem = filteredData.length; // Otomatis total item menyusut sesuai kategori!
+  let totalNormal = 0; 
+  let totalMinimum = 0; 
+  let totalHabis = 0;
+  let totalSelisih = 0; // 🌟 COUNTER BARU UNTUK SELISIH
+  
+  // ==========================================================================
+  // 🔥 LANGKAH SAKTI 2: HITUNG METRIK BARU (TERMASUK MENGHITUNG DISCREPANCY)
+  // ==========================================================================
+  filteredData.forEach(r => { 
+      let stat = String(r.status || "AVAILABLE").toUpperCase(); 
+      let fisik = Number(r.stokFisik ?? 0);
+      let ellipse = Number(r.sohEllipse ?? 0);
+
+      if(stat.includes("MINIMUM") || stat.includes("HAMPIR HABIS")) {
+          totalMinimum++; 
+      } else if(stat.includes("HABIS") || stat.includes("KOSONG")) {
+          totalHabis++; 
+      } else {
+          totalNormal++; 
+      }
+
+      // 🔄 Cek apakah ada perbedaan angka antara Fisik gudang dan Sistem Ellipse
+      if (fisik !== ellipse) {
+          totalSelisih++;
+      }
+  });
+  
+  // Render Summary Card (Ditambahkan Card Selisih Data warna Ungu)
+  let boxSummary = document.getElementById("monitoringSummaryContainer");
+  if (boxSummary) {
+      boxSummary.innerHTML = `
+        <div class="summary-card fade-in ${currentStatusFilter === 'ALL' ? 'active-filter' : ''}" onclick="setMonitoringFilter('ALL')" style="cursor:pointer;">
+          <div class="card-title">📦 Total Item</div><div class="card-value">${totalItem} <span style="font-size:12px; font-weight:normal; color:#888;">Jenis</span></div>
+        </div>
+        <div class="summary-card normal fade-in ${currentStatusFilter === 'NORMAL' ? 'active-filter' : ''}" onclick="setMonitoringFilter('NORMAL')" style="cursor:pointer;">
+          <div class="card-title">🟢 Tersedia</div><div class="card-value" style="color:#27ae60;">${totalNormal} <span style="font-size:12px; font-weight:normal; color:#888;">Item</span></div>
+        </div>
+        <div class="summary-card minimum fade-in ${currentStatusFilter === 'MINIMUM' ? 'active-filter' : ''}" onclick="setMonitoringFilter('MINIMUM')" style="cursor:pointer;">
+          <div class="card-title">⚠️ Minimum</div><div class="card-value" style="color:#d4ac0d;">${totalMinimum} <span style="font-size:12px; font-weight:normal; color:#888;">Item</span></div>
+        </div>
+        <div class="summary-card habis fade-in ${currentStatusFilter === 'HABIS' ? 'active-filter' : ''}" onclick="setMonitoringFilter('HABIS')" style="cursor:pointer;">
+          <div class="card-title">🚨 Habis</div><div class="card-value" style="color:#cb4335;">${totalHabis} <span style="font-size:12px; font-weight:normal; color:#888;">Item</span></div>
+        </div>
+        <div class="summary-card habis fade-in ${currentStatusFilter === 'SELISIH' ? 'active-filter' : ''}" onclick="setMonitoringFilter('SELISIH')" style="cursor:pointer; border-left: 5px solid #8e44ad !important;">
+          <div class="card-title">🔄 Selisih Data</div><div class="card-value" style="color:#8e44ad;">${totalSelisih} <span style="font-size:12px; font-weight:normal; color:#888;">Item</span></div>
+        </div>`;
+  }
+    
+  // 3. Jalankan Filter Pencarian Teks (Keyword) setelah card dihitung
+  if(key) {
+      filteredData = filteredData.filter(r => 
+        String(r.stockCode || '').toLowerCase().includes(key) || 
+        String(r.itemName || '').toLowerCase().includes(key) || 
+        String(r.partNumber || '').toLowerCase().includes(key)
+      );
+  }
+
+  // ==========================================================================
+  // 🔥 LANGKAH SAKTI 3: EKSEKUSI FILTER UTAMA BERDASARKAN CARD YANG DI-KLIK
+  // ==========================================================================
+  if(currentStatusFilter === "NORMAL") {
+      filteredData = filteredData.filter(r => {
+          let s = String(r.status || '').toUpperCase();
+          return !s.includes("MINIMUM") && !s.includes("HAMPIR HABIS") && !s.includes("HABIS");
+      }); 
+  } else if(currentStatusFilter === "MINIMUM") {
+      filteredData = filteredData.filter(r => {
+          let s = String(r.status || '').toUpperCase();
+          return s.includes("MINIMUM") || s.includes("HAMPIR HABIS");
+      });
+  } else if(currentStatusFilter === "HABIS") {
+      // 🔒 Kunci: Loloskan yang mengandung kata HABIS, TAPI BUKAN HAMPIR HABIS
+      filteredData = filteredData.filter(r => {
+          let s = String(r.status || '').toUpperCase();
+          return s.includes("HABIS") && !s.includes("HAMPIR HABIS");
+      });
+  } else if(currentStatusFilter === "SELISIH") {
+      // 🔒 Kunci Baru: Hanya loloskan jika nilai Stok Fisik tidak sama dengan SOH Ellipse
+      filteredData = filteredData.filter(r => Number(r.stokFisik ?? 0) !== Number(r.sohEllipse ?? 0));
+  } else if(currentStatusFilter !== "ALL") {
+      filteredData = filteredData.filter(r => String(r.status || '').toUpperCase().includes(currentStatusFilter));
+  }
+  
+  // 5. Bangun Tabel HTML Akhir
+  // 🔄 Kolom Selisih Stock cuma tampil saat kartu SELISIH lagi aktif
+  let tampilkanKolomSelisih = (currentStatusFilter === "SELISIH");
+  let totalKolom = tampilkanKolomSelisih ? 9 : 8;
+  
+  let html = `<div class="table-scroll-container fade-in" style="overflow-x:auto;">
+                <table class="monitoring-table" style="width:100%; border-collapse:collapse;">
+                  <thead style="background:#0F4C81; color:white; text-align:left;">
+                    <tr>
+                      <th style="padding:10px;">Stock Code</th>
+                      <th style="padding:10px;">Item Name</th>
+                      <th style="padding:10px;">Part Number</th>
+                      <th style="padding:10px;">Category</th> 
+                      <th style="padding:10px; text-align:center;">Sisa Fisik</th>
+                      <th style="padding:10px; text-align:center;">SOH Ellipse</th>
+					  ${tampilkanKolomSelisih ? `<th style="padding:10px; text-align:center; background:#8e44ad;">Selisih Stock</th>` : ``}
+                      <th style="padding:10px;">Lokasi</th>
+                      <th style="padding:10px;">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>`;
+  
+  if(filteredData.length === 0) {
+      html += `<tr><td colspan="${totalKolom}" style="text-align:center; padding:30px; background:#fff; color:#7f8c8d;">Data tidak ditemukan...</td></tr>`;
+  } else { 
+      filteredData.forEach(r => { 
+          let warna = "#ffffff"; 
+          let stat = String(r.status || '🟢 TERSEDIA'); 
+          let fisik = Number(r.stokFisik ?? 0);
+          let ellipse = Number(r.sohEllipse ?? 0);
+          let selisih = Number(r.selisihStok ?? (fisik - ellipse)); // fallback hitung manual kalau kolom sheet kosong
+
+          if(stat.toUpperCase().includes("MINIMUM") || stat.toUpperCase().includes("HAMPIR HABIS")) warna = "#fff9e6";		  
+          if(stat.toUpperCase().includes("HABIS")) warna = "#ffebee"; 
+          
+          // 🔄 Beri warna ungu soft khusus baris data jika sedang mem-filter 'SELISIH'
+          if (currentStatusFilter === "SELISIH") warna = "#f5eef8"; 
+          
+          let tampilKategori = r.category || (kat ? kat.toUpperCase() : "GENERAL");
+
+          // Icon indikator kecil untuk menandai cell yang selisih angka
+          let indikatorSelisih = (fisik !== ellipse) ? " <span style='color:#8e44ad; font-size:11px;' title='Selisih dengan Ellipse'>🔄</span>" : "";
+
+          html += `<tr style="background:${warna}; border-bottom:1px solid #eee;">
+                    <td style="padding:10px;"><b style="color:#0F4C81;">${r.stockCode || '-'}</b></td>
+                    <td style="padding:10px;"><b>${r.itemName || '-'}</b></td>
+                    <td style="padding:10px;">${r.partNumber || '-'}</td>
+                    <td style="padding:10px;"><span style="background:#f4f6f7; padding:4px 8px; border-radius:4px; font-weight:600; font-size:10.5px; color:#555;">${tampilKategori}</span></td> 
+                    <td style="padding:10px; text-align:center; font-weight:700; color:#e74c3c; font-size:1.1em;">${fisik}${indikatorSelisih}</td>
+					<td style="padding:10px; text-align:center; font-weight:600; color:#0F4C81; font-size:1.1em;">${ellipse}</td>
+                    ${tampilkanKolomSelisih ? `<td style="padding:10px; text-align:center; font-weight:700; color:#8e44ad; font-size:1.1em;">${selisih}</td>` : ``}
+                    <td style="padding:10px;">📍 ${r.lokasi || '-'}</td>
+                    <td style="padding:10px; font-weight:600;">${stat}</td>
+                   </tr>`; 
+      }); 
+  }
+  
+  html += `</tbody></table></div>`;
+  
+  let resultBox = document.getElementById("monitoringResult");
+  if(resultBox) {
+      resultBox.innerHTML = html;
+  }
+}
+
+// -------------------------------------------------------------------------
+// FEATURE: PENCARIAN & QR SCANNER
+// -------------------------------------------------------------------------
+async function cariMaterial(){
+  const key = document.getElementById('keywordCari').value.trim().toUpperCase(); 
+  lastKeyword = key; 
+  if(!key){bukaModalAlert('Silakan masukkan kata kunci pencarian!'); return;}
+  
+  document.getElementById('hasilCari').innerHTML = dapatkanHtmlLoader();
+  
+  try {
+    // 🚀 TEMBAK API
+    const data = await panggilAPI("searchMaterial", { keyword: key });
+    
+    // Cek jika balasan error dari server API
+    if (data && data.success === false) {
+      document.getElementById('hasilCari').innerHTML = `<p style="color:red; text-align:center;">${data.message}</p>`;
+      return;
+    }
+
+    let html='';
+    if(!data || data.length === 0){ 
+        html='<p class="fade-in" style="text-align:center; color:#e74c3c; font-weight:700; padding:20px;">Data material tidak ditemukan.</p>'; 
+    } else {
+       data.forEach(r => {
+           // Menggunakan fallback || 0 agar lebih kebal error jika data kosong
+           let stokAktual = Number(r.stokFisik) || 0; 
+           let tersedia = stokAktual > 0; 
+           let statusStok = tersedia ? '<span style="color:#27ae60;font-weight:700;">🟢 TERSEDIA</span>' : '<span style="color:#e74c3c;font-weight:700;">🔴 STOCK HABIS</span>'; 
+           let warnaCard = tersedia ? '#27ae60' : '#e74c3c';
+           
+           let ellipseStok = Number(r.sohEllipse) || 0;
+           let stokAwalGudang = Number(r.stokAwal) || 0;
+           
+           html += `
+           <div class="result-card fade-in" style="border-left:6px solid ${warnaCard}; margin-bottom:16px;">
+             <div style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap;">
+               <div>
+                 ${r.photoUrl ? `<img src="${r.photoUrl}" onclick="openImage('${r.photoUrl}')" style="width:220px;height:220px;object-fit:cover;border-radius:10px;border:1px solid #ddd;cursor:pointer;">` : `<div style="width:220px;height:220px;display:flex;align-items:center;justify-content:center;background:#eee;border-radius:10px;color:#888;">Tidak Ada Foto</div>`}
+               </div>
+               <div style="flex:1;min-width:250px;text-align:left;">
+                 <h3 style="margin-top:0;font-weight:700;color:#0F4C81;text-transform: uppercase;">${r.itemName || '-'}</h3>
+                 <b>Stock Code :</b> ${r.stockCode || '-'}<br>
+                 <b>Part Number :</b> ${r.partNumber || '-'}<br>
+                 <b>Category :</b> ${r.category || '-'}<br>
+                 <b>Satuan :</b> ${r.satuan || '-'}<br><br>
+                 
+                 <b>Stok Awal Gudang :</b> ${stokAwalGudang} ${r.satuan || ''}<br>
+                 <b>Sisa Stok Fisik :</b> <span style="color:#0F4C81;font-weight:700;">${stokAktual}</span> ${r.satuan || ''}<br>
+                 <b>SOH Ellipse System :</b> ${ellipseStok} ${r.satuan || ''}<br><br>
+                 
+                 <b>Lokasi Material :</b> <span style="text-transform: uppercase;">📍 ${r.lokasiRak || '-'}</span><br>
+                 <b>Status Kontrak :</b> <span style="text-transform: uppercase;">📋 ${r.keteranganKontrak || '-'}</span><br><br>
+                 ${statusStok}
+               </div>
+             </div>
+           </div>`;
+       });
+    }
+    document.getElementById('hasilCari').innerHTML = html;
+  } catch (err) {
+    document.getElementById('hasilCari').innerHTML = '<p style="color:red; text-align:center; padding: 20px;">Gagal menghubungi API Server.</p>';
+  }
+}
+
+function refreshCari(){ 
+    if(!lastKeyword) { bukaModalAlert('Belum ada pencarian terakhir.'); return; } 
+    document.getElementById('keywordCari').value = lastKeyword; 
+    cariMaterial(); 
+}
+
+function resetCari(){ 
+    document.getElementById('keywordCari').value = ''; 
+    document.getElementById('hasilCari').innerHTML = ''; 
+    document.getElementById('keywordCari').focus(); 
+}
+
+// [FIX FINAL] Mengunduh Dokumen Detail PDF (Dengan Fix Gambar Blank / CORS)
+async function downloadDetailPDF(index) {
+    if(!window.tempDataQR || !window.tempDataQR[index]) {
+        showToast("❌ Data tidak ditemukan.");
+        return;
+    }
+    
+    const data = window.tempDataQR[index];
+    showToast("⏳ Sedang memproses gambar dan dokumen PDF...");
+
+    let stokAktual = data.stokFisik !== "" && data.stokFisik !== null ? Number(data.stokFisik) : 0;
+    let gambarSiapCetak = "";
+
+    // 🚀 MESIN KONVERTER: Mengubah URL luar menjadi Base64 agar tidak diblokir PDF
+    const konversiKeBase64 = (url) => new Promise((resolve) => {
+        const img = new Image();
+        img.crossOrigin = "Anonymous"; // Meminta izin ke server asal (misal Google Drive)
+        img.onload = () => {
+            const canvas = document.createElement("canvas");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0);
+            resolve(canvas.toDataURL("image/jpeg", 0.8)); // Convert jadi data URI
+        };
+        img.onerror = () => resolve(url); // Jika gagal, biarkan pakai URL asli sebagai cadangan
+        // Tambahkan timestamp anti-cache agar browser tidak pakai cache lama yang tanpa CORS
+        img.src = url + (url.includes('?') ? '&' : '?') + new Date().getTime(); 
+    });
+
+    // Jalankan konversi jika material punya foto
+    if (data.photoUrl) {
+        gambarSiapCetak = await konversiKeBase64(data.photoUrl);
+    }
+
+    // Membuat kontainer memori untuk layout PDF
+    const pdfContainer = document.createElement('div');
+    pdfContainer.innerHTML = `
+      <div style="width:100%; max-width:600px; margin:auto; padding:30px; font-family:'Arial', sans-serif; background:#fff;">
+        <div style="text-align:center;">
+            <h2 style="color:#0F4C81; margin:0 0 5px 0;">INVENTORY MANAGEMENT SYSTEM</h2>
+            <div style="color:#666; font-size:12px; margin-bottom:20px; font-weight:bold;">ULPLTD SEI RAYA</div>
+            
+            ${gambarSiapCetak ? `<img src="${gambarSiapCetak}" style="width:280px; height:280px; object-fit:cover; border-radius:10px; border:1px solid #ddd; margin-bottom:20px;">` : `<div style="width:280px; height:280px; background:#eee; display:flex; align-items:center; justify-content:center; margin:0 auto 20px auto; border-radius:10px; color:#888; border:1px dashed #ccc;">Tidak Ada Foto</div>`}
+            
+            <h1 style="margin:10px 0; font-size:24px; color:#333; text-transform: uppercase;">${data.itemName || '-'}</h1>
+        </div>
+        
+        <div style="text-align:left; background:#f8f9fa; padding:20px; border-radius:8px; border:1px solid #eee; font-size:15px; line-height:1.8; margin-top:15px;">
+          <div><b>Stock Code :</b> <span style="color:#0F4C81; font-weight:bold;">${data.stockCode || '-'}</span></div>
+          <div><b>Part Number :</b> ${data.partNumber || '-'}</div>
+          <div><b>Kategori :</b> ${data.category || '-'}</div>
+          <div><b>Satuan :</b> ${data.satuan || '-'}</div>
+          
+          <div style="margin-top:15px; border-top:1px dashed #ccc; padding-top:15px;">
+            <div><b>Stok Gudang (Fisik) :</b> <span style="color:#27ae60; font-weight:bold; font-size:18px;">${stokAktual}</span></div>
+            <div><b>SOH Ellipse :</b> ${data.sohEllipse || '0'}</div>
+          </div>
+          
+          <div style="margin-top:15px; border-top:1px dashed #ccc; padding-top:15px;">
+            <div><b>Lokasi Rak :</b> <span style="background:#fff3cd; padding:4px 8px; border-radius:4px; font-weight:bold;">📍 ${data.lokasiRak || '-'}</span></div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    const opt = {
+        margin:       0.4, 
+        filename:     data.stockCode + '_DetailMaterial.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true }, 
+        jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+    };
+
+    html2pdf().set(opt).from(pdfContainer).save().then(() => {
+        showToast("✅ Dokumen PDF Berhasil Disimpan!");
+    });
+}
+
+// [FIX FINAL] Pencarian & Generate QR Code + Memori Global
+async function cariMaterialQR(){
+  const key = document.getElementById('keywordQR').value.trim().toUpperCase(); 
+  if(!key){ bukaModalAlert('Masukkan Stock Code / Item Name'); return; }
+  
+  document.getElementById('hasilQR').innerHTML = dapatkanHtmlLoader();
+  
+  try {
+    const data = await panggilAPI("searchMaterial", { keyword: key });
+    
+    if(!data || data.length === 0 || data.success === false){ 
+        document.getElementById('hasilQR').innerHTML = '<p class="fade-in" style="text-align:center; padding:20px; color:#e74c3c; font-weight:700;">Data tidak ditemukan.</p>'; 
+        return; 
+    }
+    
+    // SIMPAN DATA KE MEMORI GLOBAL AGAR BISA DIPAKAI OLEH TOMBOL SIMPAN PDF
+    window.tempDataQR = data;
+    
+    let html = '';
+    data.forEach((r, i) => {
+      html += `
+      <div class="result-card fade-in" id="cardQR_${i}">
+        <div style="display: flex; gap: 20px; align-items: stretch; flex-wrap: wrap;">
+          
+          <div class="qr-left" style="flex: 1; min-width: 300px; text-align: left;">
+            <div style="font-weight: 700; color: #0F4C81; margin-bottom: 2px;">INVENTORY MANAGEMENT SYSTEM</div>
+            <div style="font-size: 11px; color: #666; margin-bottom: 15px; border-bottom: 1px dashed #ccc; padding-bottom: 5px;">LABEL PRINT PREVIEW</div>
+            <div style="display:flex; gap:15px; align-items:flex-start;">
+              <img src="${r.photoUrl || 'https://via.placeholder.com/120?text=No+Photo'}" class="qr-photo" style="width: 110px; height: 110px; object-fit: cover; border-radius: 8px; border: 1px solid #ddd;">
+              <div style="font-size: 14px; line-height: 1.4;">
+                <h3 style="margin: 0 0 8px 0; font-size: 16px; color:#333; font-weight:700; text-transform: uppercase;">${r.itemName || '-'}</h3>
+                <b>Stock Code:</b> ${r.stockCode || '-'}<br>
+                <b>Part Number:</b> ${r.partNumber || '-'}<br>
+                <b>Lokasi Rak:</b> <span style="background:#fff3cd; padding:2px 6px; border-radius:4px; font-weight:700; text-transform: uppercase;">📍 ${r.lokasiRak || '-'}</span>
+              </div>
+            </div>
+            <div style="margin-top: 10px; font-size: 12px; color:#555; display:flex; gap:15px;">
+              <span><b>Kategori:</b> ${r.category || '-'}</span>
+              <span><b>Satuan:</b> ${r.satuan || '-'}</span>
+            </div>
+          </div>
+          
+          <div style="width: 210px; text-align: center; border-left: 1px solid #eee; padding-left: 20px; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+            <div id="qrcode_${i}" style="width:145px; height:145px; display: inline-block;"></div>
+            <div style="margin-top:10px; display:flex; gap:5px;">
+              <button onclick="downloadDetailPDF(${i})" style="padding: 6px 10px; font-size:12px; background:#6c757d; color:white; border:none; border-radius:6px; cursor:pointer; font-weight:600;">💾 Simpan</button>
+              <button onclick="printQR(${i})" style="padding: 6px 10px; font-size:12px; background:#0F4C81; color:white; border:none; border-radius:6px; cursor:pointer; font-weight:600;">🖨️ Cetak</button>
+            </div>
+          </div>
+          
+        </div>
+      </div>`;
+    });
+    document.getElementById('hasilQR').innerHTML = html;
+    
+    // Redirect URL bersih ke directView.html
+    data.forEach((r, i) => { 
+        let currentDomain = window.location.href.split('#')[0].split('?')[0].replace('index.html', '');
+        if (!currentDomain.endsWith('/')) { currentDomain += '/'; }
+        const qrTargetUrl = currentDomain + 'directView.html?id=' + encodeURIComponent(r.stockCode); 
+        new QRCode(document.getElementById('qrcode_' + i), { text: qrTargetUrl, width: 145, height: 145 }); 
+    });
+
+  } catch (err) {
+    document.getElementById('hasilQR').innerHTML = '<p style="color:red; text-align:center; padding: 20px;">Gagal memproses pembuatan QR Code.</p>';
+  }
+}
+
+function printQR(index) {
+  const card = document.getElementById('cardQR_' + index); 
+  const canvas = card.querySelector('canvas'); 
+  if (!canvas) { bukaModalAlert('QR Code belum siap.'); return; }
+  
+  const qrImage = canvas.toDataURL('image/png'); 
+  const photo = card.querySelector('.qr-photo').src; 
+  const itemName = card.querySelector('h3').innerText;
+  const htmlContent = card.querySelector('.qr-left').innerHTML; 
+  
+  const stockCode = htmlContent.match(/Stock Code:<\/b>\s*([^<]+)/)?.[1] || '-'; 
+  const partNumber = htmlContent.match(/Part Number:<\/b>\s*([^<]+)/)?.[1] || '-'; 
+  const lokasiRak = htmlContent.match(/Lokasi Rak:<\/b>\s*<span[^>]*>([^<]+)/)?.[1] || '-'; 
+  const category = htmlContent.match(/Kategori:<\/b>\s*([^<]+)/)?.[1] || '-'; 
+  const satuan = htmlContent.match(/Satuan:<\/b>\s*([^<]+)/)?.[1] || '-';
+  
+  const w = window.open('', '_blank');
+  w.document.write(`
+    <html>
+    <head>
+      <title>Print Label A5 - ${stockCode}</title>
+      <style>
+        /* 1. KUNCI UTAMA: Paksa ukuran kertas di mesin print browser dengan MM pasti */
+        @page { 
+          size: 148mm 210mm; 
+          margin: 0mm; 
+        }
+        /* 2. Kunci body agar tidak melar dan mencegah munculnya halaman ke-2 yang kosong */
+        html, body { 
+          font-family: 'Segoe UI', Arial, sans-serif; 
+          width: 148mm;
+          height: 210mm;
+          margin: 0 !important; 
+          padding: 0 !important; 
+          background: #fff;
+          color: #333;
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+          overflow: hidden; 
+        }
+        /* 3. Container cukup di-set 100% mengikuti body, jangan pakai MM lagi di sini */
+        .label-container { 
+          width: 100%;
+          height: 100%;
+          box-sizing: border-box; 
+          padding: 12mm 12mm; /* Padding atas-bawah sedikit dikurangi agar aman dari area blank printer */
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+        }
+        /* Header bergaya Corporate: Background Navy, Teks Putih */
+        .header-title { 
+          font-size: 14px; 
+          font-weight: 700; 
+          text-align: center; 
+          background-color: #0A2540;
+          color: #ffffff;
+          padding: 10px 6px; 
+          margin-bottom: 25px; 
+          letter-spacing: 1px; 
+          border-radius: 4px;
+        }
+        .top-content { 
+          display: flex; 
+          justify-content: space-between;
+          align-items: flex-start;
+          margin-bottom: 20px;
+        }
+        .left-panel { 
+          width: 58%; 
+        }
+        .right-panel { 
+          width: 38%; 
+          text-align: right;
+        }
+        /* Nama Barang dengan warna Navy */
+        .item-name { 
+          font-size: 34px; 
+          font-weight: 800; 
+          margin: 0 0 15px 0; 
+          color: #0A2540; 
+          text-transform: uppercase; 
+          line-height: 1.2; 
+        }
+        .details { 
+          font-size: 17px; 
+          line-height: 1.9; 
+        }
+        .details b {
+          display: inline-block;
+          width: 140px;
+          color: #666; /* Warna label detail agak soft */
+        }
+        /* Foto Material dengan border halus */
+        .photo { 
+          width: 145px; 
+          height: 145px; 
+          object-fit: cover; 
+          border: 2px solid #E2E8F0; 
+          border-radius: 8px; 
+          box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .middle-content {
+          flex: 1;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin: 20px 0;
+        }
+        .qr-code { 
+          width: 240px; 
+          height: 240px; 
+          display: block;
+        }
+        /* Footer dengan garis Navy tipis yang elegan */
+        .footer-info { 
+          display: flex; 
+          justify-content: space-between; 
+          font-size: 14px; 
+          border-top: 2px solid #0A2540; 
+          padding-top: 12px; 
+          font-weight: 700; 
+          color: #0A2540;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="label-container">
+        <div class="header-title">INVENTORY MANAGEMENT SYSTEM - ULPLTD SEI RAYA</div>
+        
+        <div class="top-content">
+          <div class="left-panel">
+            <h1 class="item-name">${itemName}</h1>
+            <div class="details">
+              <b>STOCK CODE</b> : ${stockCode}<br>
+              <b>PART NUMBER</b> : ${partNumber}<br>
+              <b>LOKASI RAK</b> : ${lokasiRak}
+            </div>
+          </div>
+          <div class="right-panel">
+            <img src="${photo}" class="photo">
+          </div>
+        </div>
+        
+        <div class="middle-content">
+          <img src="${qrImage}" class="qr-code">
+        </div>
+        
+        <div class="footer-info">
+          <span>KATEGORI: ${category}</span>
+          <span>SATUAN: ${satuan}</span>
+        </div>
+      </div>
+    </body>
+    </html>
+  `);
+  w.document.close(); 
+  setTimeout(function() { w.print(); w.close(); }, 500);
+}
+
+function toggleKamera(mode) {
+  // 1. Buat elemen overlay (latar belakang gelap transparan)
+  const overlay = document.createElement("div");
+  overlay.id = "scannerOverlay";
+  overlay.style.position = "fixed";
+  overlay.style.top = "0";
+  overlay.style.left = "0";
+  overlay.style.width = "100vw";
+  overlay.style.height = "100vh";
+  overlay.style.backgroundColor = "rgba(0,0,0,0.85)";
+  overlay.style.zIndex = "9999"; // Pastikan berada di paling atas
+  overlay.style.display = "flex";
+  overlay.style.flexDirection = "column";
+  overlay.style.alignItems = "center";
+  overlay.style.justifyContent = "center";
+
+  // 2. Buat Tombol Tutup Scanner
+  const btnClose = document.createElement("button");
+  btnClose.innerText = "✖ Tutup Kamera";
+  btnClose.style.padding = "12px 24px";
+  btnClose.style.marginBottom = "20px";
+  btnClose.style.backgroundColor = "#e74c3c";
+  btnClose.style.color = "white";
+  btnClose.style.border = "none";
+  btnClose.style.borderRadius = "8px";
+  btnClose.style.fontWeight = "bold";
+  btnClose.style.cursor = "pointer";
+  btnClose.style.boxShadow = "0 4px 6px rgba(0,0,0,0.3)";
+
+  // 3. Buat Iframe pemanggil aplikasi Scanner
+  const iframe = document.createElement("iframe");
+  iframe.src = "./qr-scan.html";
+  iframe.style.width = "90%";
+  iframe.style.maxWidth = "450px";
+  iframe.style.height = "60vh";
+  iframe.style.border = "none";
+  iframe.style.borderRadius = "12px";
+  iframe.style.backgroundColor = "#fff";
+  
+  // [FIX] Paksa browser mengizinkan akses kamera lintas domain (Cross-Origin)
+  iframe.setAttribute("allow", "camera *; microphone *; display-capture *");
+
+  // Gabungkan dan tampilkan ke layar
+  overlay.appendChild(btnClose);
+  overlay.appendChild(iframe);
+  document.body.appendChild(overlay);
+
+  // 4. Fungsi untuk menutup scanner dan membersihkan memori
+  const tutupScanner = () => {
+    if (document.getElementById("scannerOverlay")) {
+      document.body.removeChild(overlay);
+    }
+    window.removeEventListener("message", terimaHasilQR);
+  };
+
+  btnClose.onclick = tutupScanner;
+
+  // 5. Listener untuk menangkap data dari Iframe Scanner
+  function terimaHasilQR(event) {
+    if (event.data && event.data.type === "HASIL_QR_IMS") {
+      let stockCode = event.data.text.includes("id=") ? new URLSearchParams(event.data.text.split('?')[1]).get('id') : event.data.text.trim();
+      
+      if (!stockCode) { 
+          bukaModalAlert("Format QR Code tidak valid."); 
+          tutupScanner();
+          return; 
+      }
+      
+      stockCode = stockCode.toUpperCase();
+      
+      // Arahkan ke field yang tepat berdasarkan mode
+      if (mode === 'Cari') { document.getElementById('keywordCari').value = stockCode; cariMaterial(); } 
+      else if (mode === 'Masuk') { document.getElementById('keywordMasuk').value = stockCode; cariMaterialMasuk(); } 
+      else if (mode === 'Keluar') { document.getElementById('keywordKeluar').value = stockCode; cariMaterialKeluar(); }
+      
+      tutupScanner(); 
+    }
+  }
+
+  // Aktifkan pemantau pesan
+  window.addEventListener("message", terimaHasilQR, false);
+}
+
+// -------------------------------------------------------------------------
+// FEATURE: TRANSAKSI (MASUK & KELUAR) - FIX API GITHUB PAGES
+// -------------------------------------------------------------------------
+
+// FUNGSI UNTUK MEMUNCULKAN INPUT NOMOR KONTRAK
+function toggleNomorKontrak() {
+  const selectKontrak = document.getElementById('kontrakMasuk');
+  const divNoKontrak = document.getElementById('divNomorKontrak');
+  
+  if(selectKontrak && divNoKontrak) {
+    if(selectKontrak.value === 'MATERIAL SUDAH TERKONTRAK') {
+      divNoKontrak.style.display = 'flex'; // Tampilkan input
+    } else {
+      divNoKontrak.style.display = 'none'; // Sembunyikan input
+      document.getElementById('nomorKontrakMasuk').value = ''; // Kosongkan nilainya biar data ngga nyangkut
+    }
+  }
+}
+
+async function cariMaterialMasuk() {
+  const key = document.getElementById('keywordMasuk').value.trim().toUpperCase(); 
+  if(!key) return;
+  
+  document.getElementById('hasilMaterialMasuk').innerHTML = dapatkanHtmlLoader();
+  
+  try {
+    // 🚀 TEMBAK API GOOGLE SHEETS
+    const data = await panggilAPI("searchMaterial", { keyword: key });
+    
+    if(!data || data.length === 0 || data.success === false) { 
+      document.getElementById('hasilMaterialMasuk').innerHTML = '<p style="padding:20px; background:#fff; border-radius:8px; text-align:center; color:#e74c3c; font-weight:bold;">Material tidak ditemukan di database!.</p>'; 
+      return; 
+    }
+    
+    const r = data[0];
+    const kontrakBawaan = r.keteranganKontrak ? r.keteranganKontrak.toUpperCase() : "";
+
+    // UI LENGKAP TETAP DIPERTAHANKAN
+    document.getElementById('hasilMaterialMasuk').innerHTML = `
+      <div class="result-card fade-in" style="max-height: none; overflow-y: visible; padding: 15px; margin-bottom: 5px;">
+        <div style="display:flex; gap:20px; align-items:flex-start; flex-wrap:wrap; text-align:left;">
+          
+          <div style="flex-shrink: 0;">
+            ${r.photoUrl ? 
+              `<img src="${r.photoUrl}" onclick="openImage('${r.photoUrl}')" style="width:140px; height:140px; object-fit:cover; border-radius:8px; cursor:pointer; border: 1px solid #cbd5e1;">` : 
+              `<div style="width:140px; height:140px; background:#f1f5f9; display:flex; align-items:center; justify-content:center; border-radius:8px; color:#94a3b8; font-size:11px; border: 1px solid #e2e8f0; font-weight:600;">No Photo</div>`
+            }
+          </div>
+
+          <div style="flex:1; min-width:250px; display:flex; flex-direction:column; gap:8px;">
+            <h3 style="margin: 0 0 2px 0; font-size: 18px; color: #0F4C81; font-weight: 700;">📥 ${r.itemName}</h3>
+            
+            <div style="font-size:12px; color:#555; line-height:1.5; display:grid; grid-template-columns: auto 1fr; gap:2px 10px;">
+              <b>Stock Code:</b> <span>${r.stockCode}</span>
+              <b>Part Number:</b> <span>${r.partNumber || '-'}</span>
+              <b>Kategori:</b> <span>${r.category}</span>
+              <b>Sisa Fisik:</b> <span style="font-weight:700; color:#27ae60;">${r.stokFisik ?? 0} ${r.satuan}</span>
+            </div>
+            
+            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:10px; margin-top:4px;">
+              <div style="display:flex; flex-direction:column;">
+                <b style="font-size:11px; color:#555; margin-bottom:3px;">JUMLAH MASUK <span style="color:red;">*</span></b>
+                <input type="number" id="qtyMasuk" placeholder="0" min="1" style="height:34px; border-radius:6px; border:1px solid #cbd5e1; padding:0 10px; font-size:13px; font-family:'Poppins',sans-serif;">
+              </div>
+              <div style="display:flex; flex-direction:column;">
+                <b style="font-size:11px; color:#555; margin-bottom:3px;">VENDOR / ASAL BARANG <span style="color:red;">*</span></b>
+                <input type="text" id="vendorMasuk" placeholder="Nama PT / Toko" style="height:34px; border-radius:6px; border:1px solid #cbd5e1; padding:0 10px; font-size:13px; font-family:'Poppins',sans-serif; text-transform: uppercase;">
+              </div>
+            </div>
+
+			<div style="display:flex; flex-direction:column;">
+              <b style="font-size:11px; color:#555; margin-bottom:3px;">STATUS MATERIAL / KETERANGAN KONTRAK <span style="color:red;">*</span></b>
+              <!-- Tambahkan onchange="toggleNomorKontrak()" di select ini -->
+              <select id="kontrakMasuk" onchange="toggleNomorKontrak()" style="height:34px; border-radius:6px; border:1px solid #cbd5e1; padding:0 10px; font-size:13px; font-family:'Poppins',sans-serif; background:white; cursor:pointer;">
+                <option value="">-- Pilih Status Kontrak --</option>
+                <option value="MATERIAL SUDAH TERKONTRAK" ${kontrakBawaan === "MATERIAL SUDAH TERKONTRAK" ? "selected" : ""}>MATERIAL SUDAH TERKONTRAK</option>
+                <option value="MATERIAL BELUM TERKONTRAK" ${kontrakBawaan === "MATERIAL BELUM TERKONTRAK" ? "selected" : ""}>MATERIAL BELUM TERKONTRAK</option>
+                <option value="STOCK MATERIAL KEANDALAN" ${kontrakBawaan === "STOCK MATERIAL KEANDALAN" ? "selected" : ""}>STOCK MATERIAL KEANDALAN</option>
+              </select>
+            </div>
+
+            <!-- DIV INPUT NOMOR KONTRAK (Otomatis menyesuaikan dengan nilai bawaan) -->
+            <div id="divNomorKontrak" style="display:${kontrakBawaan === 'MATERIAL SUDAH TERKONTRAK' ? 'flex' : 'none'}; flex-direction:column; margin-top:5px;">
+              <b style="font-size:11px; color:#555; margin-bottom:3px;">NOMOR KONTRAK <span style="color:red;">*</span></b>
+              <input type="text" id="nomorKontrakMasuk" placeholder="Masukkan Nomor Kontrak" style="height:34px; border-radius:6px; border:1px solid #cbd5e1; padding:0 10px; font-size:13px; font-family:'Poppins',sans-serif; text-transform: uppercase;">
+            </div>
+
+            <div style="display:flex; flex-direction:column;">
+              <b style="font-size:11px; color:#555; margin-bottom:3px;">KETERANGAN TAMBAHAN</b>
+              <input type="text" id="ketMasuk" placeholder="Catatan tambahan jika ada" style="height:34px; border-radius:6px; border:1px solid #cbd5e1; padding:0 10px; font-size:13px; font-family:'Poppins',sans-serif; text-transform: uppercase;">
+            </div>
+            
+            <button id="btnSimpanMasukSistem" onclick="konfirmasiSimpanMasuk('${r.stockCode}','${(r.itemName || '').replace(/'/g,"")}','${r.partNumber || '-'}','${r.category}','${r.satuan}')" style="height:38px; background:#0F4C81; color:white; border:none; border-radius:6px; font-weight:700; cursor:pointer; font-family:'Poppins',sans-serif; font-size:13px; margin-top:5px; transition:0.2s;">💾 SIMPAN PENERIMAAN MATERIAL</button>
+          </div>
+
+        </div>
+      </div>`;
+  } catch(err) {
+    document.getElementById('hasilMaterialMasuk').innerHTML = '<p style="color:red; padding:20px; text-align:center;">Gagal memuat data dari server API.</p>';
+  }
+}
+
+// -------------------------------------------------------------------------
+// FUNGSI KONFIRMASI SIMPAN (DIUBAH KE ASYNC/AWAIT)
+// -------------------------------------------------------------------------
+async function konfirmasiSimpanMasuk(sc, name, part, cat, sat){
+  const j = document.getElementById('qtyMasuk').value;
+  const v = document.getElementById('vendorMasuk').value.trim();
+  const kontrak = document.getElementById('kontrakMasuk').value;
+  const noKontrak = document.getElementById('nomorKontrakMasuk') ? document.getElementById('nomorKontrakMasuk').value.trim() : ""; // TARIK DATA NOMOR KONTRAK
+  const k = document.getElementById('ketMasuk').value.trim();
+  const u = localStorage.getItem("ims_user_name") || "SYSTEM USER"; 
+  
+  // 1. Validasi form wajib di frontend
+  if(!j || !v || !kontrak) { 
+    bukaModalAlert("Gagal: Jumlah, Vendor, dan Status Kontrak wajib diisi!"); 
+    return; 
+  }
+
+  // Validasi Tambahan: Jika statusnya sudah terkontrak, nomor wajib diisi!
+  if(kontrak === "MATERIAL SUDAH TERKONTRAK" && !noKontrak) {
+    bukaModalAlert("Gagal: Nomor Kontrak wajib diisi karena status material adalah Sudah Terkontrak!"); 
+    return;
+  }
+  
+  // Custom teks notifikasi
+  let infoKontrak = kontrak;
+  if(kontrak === "MATERIAL SUDAH TERKONTRAK") {
+     infoKontrak += `<br><b>No. Kontrak:</b> <span style="color:#e67e22;">${noKontrak.toUpperCase()}</span>`;
+  }
+
+  // 2. POP-UP KONFIRMASI DENGAN FORMAT NOTIFIKASI
+  Swal.fire({
+    title: 'Konfirmasi Penerimaan?',
+    html: `<div style="text-align: left; font-size: 13px; line-height: 1.6;">
+            Anda akan memasukkan material berikut ke gudang:<br><br>
+            <b>Nama Barang:</b> ${name}<br>
+            <b>Stock Code:</b> ${sc}<br>
+            <b>Jumlah Masuk:</b> <span style="color:#27ae60; font-weight:700;">${j} ${sat}</span><br>
+            <b>Vendor/Asal:</b> ${v.toUpperCase()}<br>
+            <b>Status Material:</b> ${infoKontrak}<br>
+            <b>Keterangan:</b> ${k ? k.toUpperCase() : '-'}<br>
+            <b>Petugas Gudang:</b> 👤 ${u} </div>`,
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#0F4C81',
+    cancelButtonColor: '#6c757d',
+    confirmButtonText: 'Ya, Sudah Sesuai!',
+    cancelButtonText: 'Cek Kembali'
+  }).then(async (result) => { 
+    if (result.isConfirmed) {
+      const btn = document.getElementById("btnSimpanMasukSistem");
+      btn.disabled = true;
+      btn.innerHTML = "⏳ MEMPROSES PENERIMAAN...";
+
+      const payloadMasuk = {
+        stockCode: sc, 
+        itemName: name, 
+        partNumber: part,
+        category: cat,
+        satuan: sat,
+        jumlah: j, 
+        vendor: v, 
+        keteranganKontrak: kontrak, 
+        nomorKontrak: noKontrak, // <--- TAMBAHKAN KE DALAM PAKET PENGIRIMAN
+        keterangan: k, 
+        userLogin: u
+      };
+
+      try {
+        const res = await panggilAPI("simpanMaterialMasuk", { data: payloadMasuk, username: localStorage.getItem("ims_username") });
+        
+        btn.disabled = false;
+        btn.innerHTML = "💾 SIMPAN PENERIMAAN MATERIAL";
+        
+        if(res && res.success) {
+           showToast("Sukses: Material masuk berhasil dicatat!"); 
+           showMaterialMasuk(); 
+        } else {
+           bukaModalAlert("Gagal: " + (res?.message || "Server menolak penyimpanan."));
+        }
+      } catch(err) {
+        btn.disabled = false;
+        btn.innerHTML = "💾 SIMPAN PENERIMAAN MATERIAL";
+        bukaModalAlert("Server Error: Gagal menyimpan data transaksi.");
+      }
+    }
+  });
+}
+// -------------------------------------------------------------------------
+// FEATURE: TRANSAKSI MATERIAL KELUAR - FIX API GITHUB PAGES
+// -------------------------------------------------------------------------
+async function cariMaterialKeluar(){
+  const key = document.getElementById('keywordKeluar').value.trim().toUpperCase();
+  if(!key) return;
+  
+  document.getElementById('hasilMaterialKeluar').innerHTML = dapatkanHtmlLoader();
+  
+  try {
+    // 1. AMBIL DATA MASTER DROPDOWN DARI BACKEND API
+    const masterRes = await panggilAPI("getDropdownMasterKeluar");
+    const masterData = (masterRes && masterRes.success !== false) ? masterRes : { unitList: [], jenisPekerjaanList: [] };
+
+    // 2. AMBIL DATA MATERIAL YANG DICARI VIA API
+    const data = await panggilAPI("searchMaterial", { keyword: key });
+    
+    if(!data || data.length===0 || data.success === false) {
+      document.getElementById('hasilMaterialKeluar').innerHTML = '<p style="padding:20px; background:#fff; border-radius:8px; color:red; font-weight:bold; text-align:center;">Material tidak ditemukan di database.</p>';
+      return;
+    }
+    
+    const r = data[0];
+    
+    // DIKUNCI LURUS: Opsi Unit membaca dari unitBillingList
+    let opsiUnit = '<option value="">-- Pilih Unit --</option>';
+    if (masterData.unitList && masterData.unitList.length > 0) {
+      masterData.unitList.forEach(u => {
+        opsiUnit += `<option value="${u}">${u}</option>`;
+      });
+    }
+
+    // DIKUNCI LURUS: Opsi Kerja membaca dari jenisPekerjaanList
+    let opsiKerja = '<option value="">-- Pilih Pekerjaan --</option>';
+    if (masterData.jenisPekerjaanList && masterData.jenisPekerjaanList.length > 0) {
+      masterData.jenisPekerjaanList.forEach(p => {
+        opsiKerja += `<option value="${p}">${p}</option>`;
+      });
+    }
+
+    // 🛠️ PERUBAHAN TAMPILAN (LAYOUT ASLI 100% DIPERTAHANKAN)
+    document.getElementById('hasilMaterialKeluar').innerHTML = `
+      <div class="result-card fade-in" style="max-height: none; overflow-y: visible; padding: 20px; margin-bottom: 2px;">
+        <div style="display:flex; gap:25px; align-items:flex-start; flex-wrap:wrap; text-align:left;">
+          
+          <div style="flex-shrink: 0;">
+            ${r.photoUrl ? 
+              `<img src="${r.photoUrl}" onclick="openImage('${r.photoUrl}')" style="width:140px; height:140px; object-fit:cover; border-radius:10px; cursor:pointer; border: 1px solid #cbd5e1;">` : 
+              `<div style="width:140px; height:140px; background:#f1f5f9; display:flex; align-items:center; justify-content:center; border-radius:10px; color:#94a3b8; font-size:13px; border: 1px solid #e2e8f0; font-weight:600;">No Photo</div>`
+            }
+          </div>
+
+          <div style="flex:1; min-width:250px; display:flex; flex-direction:column; gap:10px;">
+            <h3 style="margin: 0 0 4px 0; font-size: 20px; color: #0F4C81; font-weight: 700;">📤 ${r.itemName}</h3>
+            
+            <div style="font-size:13px; color:#444; line-height:1.5; display:grid; grid-template-columns: auto 1fr; gap:3px 12px; margin-bottom: 5px;">
+              <b>Stock Code:</b> <span>${r.stockCode}</span>
+              <b>Part Number:</b> <span>${r.partNumber || '-'}</span>
+              <b>Kategori:</b> <span>${r.category}</span>
+              <b>Sisa Fisik:</b> <span style="font-weight:700; color:#e74c3c;">${r.stokFisik ?? 0} ${r.satuan}</span>
+            </div>
+            
+            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:12px;">
+              <div style="display:flex; flex-direction:column;">
+                <b style="font-size:11.5px; color:#444; margin-bottom:4px;">JUMLAH KELUAR <span style="color:red;">*</span></b>
+                <input type="number" id="qtyKeluar" placeholder="0" min="1" max="${r.stokFisik || 0}" style="height:38px; border-radius:6px; border:1px solid #cbd5e1; padding:0 10px; font-size:13px; font-family:'Poppins',sans-serif;">
+              </div>
+              <div style="display:flex; flex-direction:column;">
+                <b style="font-size:11.5px; color:#444; margin-bottom:4px;">NOMOR WO <span style="color:red;">*</span></b>
+                <input type="text" id="woKeluar" placeholder="Contoh: WO-2026" style="height:38px; border-radius:6px; border:1px solid #cbd5e1; padding:0 10px; font-size:13px; font-family:'Poppins',sans-serif; text-transform: uppercase;">
+              </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:12px;">
+              <div style="display:flex; flex-direction:column;">
+                <b style="font-size:11.5px; color:#444; margin-bottom:4px;">UNIT <span style="color:red;">*</span></b>
+                <select id="unitKeluar" style="height:38px; border-radius:6px; border:1px solid #cbd5e1; padding:0 10px; font-size:13px; font-family:'Poppins',sans-serif; background:white; cursor:pointer;">
+                  ${opsiUnit}
+                </select>
+              </div>
+              <div style="display:flex; flex-direction:column;">
+                <b style="font-size:11.5px; color:#444; margin-bottom:4px;">JENIS PEKERJAAN <span style="color:red;">*</span></b>
+                <select id="kerjaKeluar" style="height:38px; border-radius:6px; border:1px solid #cbd5e1; padding:0 10px; font-size:13px; font-family:'Poppins',sans-serif; background:white; cursor:pointer;">
+                  ${opsiKerja}
+                </select>
+              </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:12px;">
+              <div style="display:flex; flex-direction:column;">
+                <b style="font-size:11.5px; color:#444; margin-bottom:4px;">PETUGAS / YANG MENGAMBIL <span style="color:red;">*</span></b>
+                <input type="text" id="petugasAmbil" placeholder="Nama pengambil" style="height:38px; border-radius:6px; border:1px solid #cbd5e1; padding:0 10px; font-size:13px; font-family:'Poppins',sans-serif; text-transform: uppercase;">
+              </div>
+              <div style="display:flex; flex-direction:column;">
+                <b style="font-size:11.5px; color:#444; margin-bottom:4px;">KETERANGAN TAMBAHAN</b>
+                <input type="text" id="ketKeluar" placeholder="Catatan Pekerjaan" style="height:38px; border-radius:6px; border:1px solid #cbd5e1; padding:0 10px; font-size:13px; font-family:'Poppins',sans-serif; text-transform: uppercase;">
+              </div>
+            </div>
+            
+            <button id="btnSimpanKeluarSistem" onclick="konfirmasiSimpanKeluar('${r.stockCode}','${(r.itemName || '').replace(/'/g,"")}','${r.partNumber || '-'}','${r.category}','${r.satuan}', ${r.stokFisik || 0})" style="height:42px; background:#e74c3c; color:white; border:none; border-radius:6px; font-weight:700; cursor:pointer; font-family:'Poppins',sans-serif; font-size:14px; margin-top:8px; letter-spacing: 0.5px;">💾 SIMPAN PENGELUARAN MATERIAL</button>
+          </div>
+
+        </div>
+      </div>`;
+  } catch(err) {
+    document.getElementById('hasilMaterialKeluar').innerHTML = '<p style="color:red; padding:20px; text-align:center;">Gagal memuat data dari server API.</p>';
+  }
+}
+
+// -------------------------------------------------------------------------
+// FUNGSI KONFIRMASI SIMPAN KELUAR (DIUBAH KE ASYNC/AWAIT)
+// -------------------------------------------------------------------------
+async function konfirmasiSimpanKeluar(sc, name, part, cat, sat, stokMaksimal){
+  const j = Number(document.getElementById('qtyKeluar').value || 0);
+  const wo = document.getElementById('woKeluar').value.trim();
+  const unit = document.getElementById('unitKeluar').value;
+  const kerja = document.getElementById('kerjaKeluar').value;
+  const ambil = document.getElementById('petugasAmbil').value.trim(); 
+  const k = document.getElementById('ketKeluar').value.trim();
+  const userAktif = localStorage.getItem("ims_user_name") || "SYSTEM USER"; 
+  
+  if(!j || !wo || !unit || !kerja || !ambil) { 
+    bukaModalAlert("Gagal: Kolom bertanda bintang (*) wajib diisi/dipilih!"); 
+    return; 
+  }
+  
+  if(j > stokMaksimal) {
+    bukaModalAlert(`Gagal: Jumlah pengeluaran (${j} ${sat}) melebihi sisa stok fisik gudang (${stokMaksimal} ${sat})!`);
+    return;
+  }
+  
+  Swal.fire({
+    title: 'Konfirmasi Pengeluaran?',
+    html: `<div style="text-align: left; font-size: 13px; line-height: 1.6;">
+            Anda akan mengeluarkan material berikut dari gudang:<br><br>
+            <b>Nama Barang:</b> ${name}<br>
+            <b>Stock Code:</b> ${sc}<br>
+            <b>Jumlah Keluar:</b> <span style="color:#e74c3c; font-weight:700;">${j} ${sat}</span><br>
+            <b>Nomor WO:</b> ${wo.toUpperCase()}<br>
+            <b>Unit / Pekerjaan:</b> ${unit} / ${kerja}<br>
+            <b>Petugas (Pengambil):</b> ${ambil.toUpperCase()}<br>
+            <b>Keterangan:</b> ${k ? k.toUpperCase() : '-'}<br><br>
+            <b>Petugas Gudang:</b> 👤 ${userAktif}
+           </div>`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#e74c3c',
+    cancelButtonColor: '#6c757d',
+    confirmButtonText: 'Ya, Keluarkan Barang!',
+    cancelButtonText: 'Cek Kembali'
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      const btn = document.getElementById("btnSimpanKeluarSistem");
+      btn.disabled = true;
+      btn.innerHTML = "⏳ MEMPROSES DATA PENGELUARAN...";
+
+      const payloadKeluar = {
+        stockCode: sc, itemName: name, partNumber: part, category: cat, satuan: sat,
+        jumlah: j, nomorWO: wo, unit: unit, jenisPekerjaan: kerja, petugasAmbil: ambil,
+        keterangan: k, userLogin: userAktif 
+      };
+
+      try {
+        // 🚀 KIRIM DATA KE BACKEND API
+        const res = await panggilAPI("simpanMaterialKeluar", { data: payloadKeluar, username: localStorage.getItem("ims_username") });
+        
+        if(res && res.success) {
+          showToast(res.message || "Material berhasil dikeluarkan"); 
+          showMaterialKeluar(); // Refresh halaman kembali bersih setelah sukses
+        } else {
+          // JALAN JIKA WO DUPLIKAT: Kembalikan fungsi tombol dan tembak Pop-Up Peringatan Merah!
+          btn.disabled = false;
+          btn.innerHTML = "💾 SIMPAN PENGELUARAN MATERIAL";
+          Swal.fire({
+            title: 'Peringatan WO Ganda!',
+            text: res?.message || "Gagal menyimpan pengeluaran.",
+            icon: 'error',
+            confirmButtonColor: '#e74c3c'
+          });
+        }
+      } catch(err) {
+        btn.disabled = false;
+        btn.innerHTML = "💾 SIMPAN PENGELUARAN MATERIAL";
+        bukaModalAlert("Server Error: Gagal memproses pengeluaran barang.");
+      }
+    }
+  });
+}
+
+function prosesStokKosong(stockCode) {
+  Swal.fire({ 
+      title: 'Stok Kosong!', 
+      text: 'Sisa Stok Fisik untuk material ini 0. Ingin langsung melakukan input penerimaan?', 
+      icon: 'warning', 
+      showCancelButton: true, 
+      confirmButtonColor: '#0F4C81', 
+      cancelButtonColor: '#6c757d', 
+      confirmButtonText: '📥 Ya, Input Penerimaan', 
+      cancelButtonText: '🏠 Batal' 
+  }).then((result) => { 
+      if (result.isConfirmed) {
+          localStorage.setItem('pending_receive_code', stockCode);
+          showMaterialMasuk(); 
+      } else {
+          showHome(); 
+      }
+  });
+}
+
+// -------------------------------------------------------------------------
+// FEATURE: INPUT NEW MATERIAL (FIX API GITHUB PAGES)
+// -------------------------------------------------------------------------
+
+function showInputMaterialBaru() { 
+  if(!cekAksesAdmin()) return;
+  closeNav(); 
+  hideAllSections(); 
+  applyFadeIn('inputMaterialBaruPage'); 
+  
+  try {
+    if(document.getElementById('newStockCode')) document.getElementById('newStockCode').value = '';
+    if(document.getElementById('newItemName')) document.getElementById('newItemName').value = '';
+    if(document.getElementById('newPartNumber')) document.getElementById('newPartNumber').value = '';
+    if(document.getElementById('newCategory')) document.getElementById('newCategory').value = '';
+    if(document.getElementById('newSatuan')) document.getElementById('newSatuan').value = '';
+    if(document.getElementById('newLokasiRak')) document.getElementById('newLokasiRak').value = '';
+    if(document.getElementById('newStokAwal')) document.getElementById('newStokAwal').value = '0';
+    if(document.getElementById('newPhotoUrl')) document.getElementById('newPhotoUrl').value = '';
+    if(document.getElementById('newKeteranganKontrak')) document.getElementById('newKeteranganKontrak').value = '';
+    
+    setTimeout(() => {
+      if(document.getElementById('newStockCode')) document.getElementById('newStockCode').focus();
+    }, 300);
+  } catch(err) {
+    console.log("Error reset form: ", err);
+  }
+}
+
+async function prosesSimpanMaterialBaru() {
+  const stockCode = document.getElementById('newStockCode').value.trim().toUpperCase();
+  const itemName = document.getElementById('newItemName').value.trim().toUpperCase();
+  const partNumber = document.getElementById('newPartNumber').value.trim().toUpperCase();
+  const category = document.getElementById('newCategory').value.trim().toUpperCase();
+  const satuan = document.getElementById('newSatuan').value.trim().toUpperCase();
+  const lokasiRak = document.getElementById('newLokasiRak').value.trim().toUpperCase();
+  const keteranganKontrak = document.getElementById('newKeteranganKontrak').value.trim().toUpperCase(); 
+  const stokAwal = document.getElementById('newStokAwal').value;
+  const photoUrl = document.getElementById('newPhotoUrl').value.trim();
+  const userAktif = localStorage.getItem("ims_user_name") || "SYSTEM USER"; 
+
+  if(!stockCode || !itemName || !category || !satuan || !lokasiRak || !keteranganKontrak) {
+    bukaModalAlert("Gagal: Kolom dengan tanda bintang (*) wajib diisi!");
+    return;
+  }
+
+  Swal.fire({
+    title: 'Konfirmasi Registrasi?',
+    html: `
+      <div style="text-align: left; font-family: 'Poppins', sans-serif; font-size: 14px; line-height: 1.6; color: #333;">
+        <p style="text-align: center; color: #666; margin-bottom: 20px;">Anda akan mendaftarkan item material berikut ke dalam database utama:</p>
+        <div style="margin-bottom: 8px;"><b>Stock Code:</b> <span style="color: #0F4C81; font-weight: 700;">${stockCode}</span></div>
+        <div style="margin-bottom: 8px;"><b>Nama Barang:</b> ${itemName}</div>
+        <div style="margin-bottom: 8px;"><b>Part Number:</b> ${partNumber}</div>
+        <div style="margin-bottom: 8px;"><b>Kategori:</b> ${category}</div>
+        <div style="margin-bottom: 8px;"><b>Satuan Barang:</b> ${satuan}</div>
+        <div style="margin-bottom: 8px;"><b>Lokasi Rak:</b> ${lokasiRak}</div>
+        <div style="margin-bottom: 8px;"><b>Status Kontrak:</b> <span style="font-size: 13px; font-weight: 600; color: #e67e22;">${keteranganKontrak}</span></div>
+        <div style="margin-bottom: 8px;"><b>Stok Awal Fisik:</b> <span style="color: #27ae60; font-weight: 700;">${stokAwal} ${satuan}</span></div>
+      </div>
+    `,
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#0F4C81',
+    cancelButtonColor: '#6c757d',
+    confirmButtonText: 'Ya, Sudah Sesuai!',
+    cancelButtonText: 'Cek Kembali',
+    customClass: { popup: 'format-popup-modern' }
+  }).then(async (result) => { 
+    if (result.isConfirmed) {
+      const btn = document.getElementById("btnSimpanMaterialBaru");
+      btn.disabled = true; 
+      btn.innerHTML = "⏳ MEMPROSES...";
+
+      const payload = {
+        stockCode: stockCode, itemName: itemName, partNumber: partNumber,
+        category: category, satuan: satuan, lokasiRak: lokasiRak,
+        stokAwal: stokAwal, photoUrl: photoUrl, keteranganKontrak: keteranganKontrak, userLogin: userAktif 
+      };
+
+      try {
+        const res = await panggilAPI("simpanMaterialBaruSistem", { data: payload, username: localStorage.getItem("ims_username") });
+        
+        btn.disabled = false; 
+        btn.innerHTML = "💾 REGISTER MATERIAL BARU";
+        
+        if(res && res.success) {
+          showToast(res.message);
+          showInputMaterialBaru(); 
+        } else {
+          bukaModalAlert(res?.message || "Gagal menyimpan ke database."); 
+        }
+      } catch(err) {
+        btn.disabled = false; 
+        btn.innerHTML = "💾 REGISTER MATERIAL BARU";
+        bukaModalAlert("Server Error: Gagal memproses pendaftaran.");
+      }
+    }
+  });
+}
+
+// -------------------------------------------------------------------------
+// EVENT LISTENERS GLOBAL
+// -------------------------------------------------------------------------
+document.addEventListener('DOMContentLoaded', function(){
+  // --- KODE BARU: PENGECEK SESI LOGIN OTOMATIS ---
+  const loginTime = localStorage.getItem("ims_login_time");
+  const userName = localStorage.getItem("ims_user_name");
+  
+  if (loginTime && userName) {
+      const now = new Date().getTime();
+      const diff = now - parseInt(loginTime);
+      
+      // Jika waktu login belum lewat 30 menit (30 * 60 * 1000 millisecond)
+      if (diff < 30 * 60 * 1000) { 
+          document.getElementById("loginPage").style.display = "none";
+          document.getElementById("userBadge").innerText = "👤 User: " + userName;
+          terapkanHakAksesMenu();
+          showHome(); // Langsung tembak ke halaman utama
+          
+          // [FIX] NYALAKAN ALARM IDLE SETELAH MASUK HALAMAN UTAMA!
+          jalankanPemicuAutoLogoutMurni(); 
+
+		  // 👉 [TAMBAH INI] Jalankan fungsi scan URL setelah web terbuka
+		  cekDeepLinkingUrl();
+      } else {
+          // Kalau lebih dari 30 menit, bersihkan memori biar dia login ulang
+          localStorage.clear();
+      }
+  }
+
+  const inputCari = document.getElementById('keywordCari');
+  if(inputCari) { inputCari.addEventListener('keypress', function(e){ if(e.key==='Enter') cariMaterial(); }); }
+  
+  const inputQR = document.getElementById('keywordQR');
+  if(inputQR) { inputQR.addEventListener('keypress', function(e){ if(e.key==='Enter') cariMaterialQR(); }); }
+  
+  const inputMasuk = document.getElementById('keywordMasuk');
+  if(inputMasuk) { inputMasuk.addEventListener('keypress', function(e){ if(e.key==='Enter') cariMaterialMasuk(); }); }
+  
+  const inputKeluar = document.getElementById('keywordKeluar');
+  if(inputKeluar) { inputKeluar.addEventListener('keypress', function(e){ if(e.key==='Enter') cariMaterialKeluar(); }); }
+  
+  const inputMonitoring = document.getElementById('keywordMonitoring');
+  if(inputMonitoring) { inputMonitoring.addEventListener('keypress', function(e){ if(e.key==='Enter') loadMonitoringMaterial(); }); }
+  
+  const inputPass = document.getElementById('loginPass');
+  if(inputPass) { inputPass.addEventListener('keypress', function(e){ if(e.key==='Enter') prosesValidasiLogin();  }); }
+  
+  const inputUser = document.getElementById('loginUser');
+  if(inputUser) { inputUser.addEventListener('keypress', function(e){ if(e.key==='Enter') document.getElementById('loginPass').focus(); }); }
+});
+
+function cekDeepLinkingUrl() { 
+    // [FIX Kritis] Baca parameter URL gaya Vercel / HTML Statis
+    const urlParams = new URLSearchParams(window.location.search);
+    const menu = urlParams.get('menu'); 
+    const kode = urlParams.get('kode'); 
+    
+    if (menu && kode) { 
+        if (menu === 'masuk') { 
+            showMaterialMasuk(); 
+            document.getElementById('keywordMasuk').value = kode.toUpperCase(); 
+            cariMaterialMasuk(); 
+        } else if (menu === 'keluar') { 
+            showMaterialKeluar(); 
+            document.getElementById('keywordKeluar').value = kode.toUpperCase(); 
+            cariMaterialKeluar(); 
+        } 
+    } 
+}
+</script>
+</body>
+</html>
